@@ -5,4 +5,10 @@
 
 # Week Progress
 
-## 11/1/22
+## 11/1/22 Week 1
+- Initial creation of repo
+- Setup repo directories and initial readmes
+- Beginning research --> find references
+- Creation of overleaf document
+
+## 11/10/22 Week 2
