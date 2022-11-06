@@ -326,7 +326,7 @@ unsigned int Rope::internal_copy(RopeNode* n, char* buffer, unsigned int length)
     }
 }
 
-
+/*
 int main(void)
 {
     const char* str = "Hello, World!!";
@@ -351,3 +351,4 @@ int main(void)
     delete[] buf;
     return 0;
 }
+*/
