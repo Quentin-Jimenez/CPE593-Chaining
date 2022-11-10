@@ -5,4 +5,14 @@
 
 # Week Progress
 
-## 11/1/22
+## 11/1/22 Week 1
+- Initial creation of repo
+- Setup repo directories and initial readmes
+- Beginning research --> find references
+- Creation of overleaf document
+
+## 11/10/22 Week 2
+- Research of rope algorithm (which chain is based off of) 
+- Pulling example rope implementations and working on testing of performance etc. how it works
+- Mempool class for chain implementation
+- Scheduling w/ librarian
