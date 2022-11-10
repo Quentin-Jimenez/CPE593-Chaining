@@ -13,7 +13,7 @@
 
 ## 11/10/22 Week 2
 - Research of rope algorithm (which chain is based off of) 
-- Added relevant papers to /ref. 
+- Added relevant papers to /ref from Scopus. 
 - Pulling example rope implementations and working on testing of performance etc. how it works
 - Mempool class for chain implementation
 - Scheduling w/ librarian
