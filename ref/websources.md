@@ -9,3 +9,6 @@ https://www.geeksforgeeks.org/ropes-data-structure-fast-string-concatenation/
 
 ### Chain
 
+### Mempool
+https://www.codeproject.com/articles/15527/c-memory-pool
+

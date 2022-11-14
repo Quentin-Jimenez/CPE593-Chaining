@@ -3,6 +3,21 @@
 
 class MemoryPool
 {
+    private:
+    typedef struct SMemoryChunk
+    {
+        char *Data ;
+        std::size_t DataSize ;
+        std::size_t UsedSize ;    
+        bool IsAllocationChunk ; 
+        SMemoryChunk *Next ;      
+    } SMemoryChunk ;
+
+    public:
+    MemoryPool(const MemoryPool&);
+    MemoryPool& operator=(const MemoryPool);
+
+
     MemoryPool(): poolPtr(mempoolPool)
     {
     }
@@ -27,13 +42,5 @@ class MemoryPool
         //TODO:: Implement this
     }
 
-
-    private:
-    MemoryPool(const MemoryPool&);
-    MemoryPool& operator=(const MemoryPool);
-
-    char mempool[4096]; // TODO:: TBD
-
-    char *poolPtr;
 
 }
