@@ -1,0 +1,8 @@
+# Gitignore file to ensure a nice clear repo and avoiding local environment changes
+
+# Ignore all executibles
+*.exe
+
+# Ignore vscode configs for now
+*/.vscode/*
+
