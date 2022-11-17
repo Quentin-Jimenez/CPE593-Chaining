@@ -2,7 +2,8 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include "include/chain.hh"
+#include "../include/chain.hh"
+#include "../include/bst.hh"
 
 using namespace std;
 
@@ -49,6 +50,9 @@ void inserttest(uint32_t append_size, uint32_t num_appends,
 int main() {
 	const char* str = "Hello, World!!";
     const char* other = "Lewin";
+
+    avl_tree avl;
+    avl.insert(node ,"hello");
 
     Rope r(str);
     r.insert(5,other);
