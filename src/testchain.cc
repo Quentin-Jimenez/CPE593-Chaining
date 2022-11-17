@@ -2,7 +2,8 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include "include/chain.hh"
+#include "../include/chain.hh"
+#include "../include/bst.hh"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ void read_and_write_test(const char filename[], const char file2[]) {
 }
 	
 //read in a document and append size byte chunks of text num_appends times , then return the document
-chain appendtest(const char filename[], uint64_t num_appends, uint64_t size) {
+void appendtest(const char filename[], uint64_t num_appends, uint64_t size) {
     ifstream testDocFile (filename);
 
     while(testDocFile.is_open())
@@ -49,17 +50,28 @@ void inserttest(uint32_t append_size, uint32_t num_appends,
 int main() {
 	const char* str = "Hello, World!!";
     const char* other = "Lewin";
+    const char* another = "Lets go to disney";
 
-    Rope r(str);
-    r.insert(5,other);
-    r.print_tree(std::cout);
+    int minDegree = 2; //TODO:: Determine best mindegree
+    Chain chain(minDegree);
 
-	read_and_write_test("testdoc.txt", "chainResult.txt");
+    chain.insert(0, str);
+    chain.insert(1, other);
+    chain.insert(2, another);
+
+    chain.showTree();
+
+
+ //   Rope r(str);
+  //  r.insert(5,other);
+   // r.print_tree(std::cout);
+
+//	read_and_write_test("testdoc.txt", "chainResult.txt");
 	
 	// read in 100MB document
-	appendtest("testDoc.txt", 1000000); 
+//	appendtest("testDoc.txt", 1000000); 
 
 	// build 100MB document with 1 million 100 byte appends
 	// then do 100MB of insertions
-	insertTest(100, 1000000, 100, 1000000);
+//	insertTest(100, 1000000, 100, 1000000);
 }

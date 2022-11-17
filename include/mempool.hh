@@ -1,6 +1,8 @@
 // Source for base mempool https://iq.opengenus.org/memory-pool/
 #include <stdio.h>>
 
+
+//TODO:: Need to change implemntation of this using chunks
 class MemoryPool
 {
     private:
@@ -34,6 +36,9 @@ class MemoryPool
     void *reallocateMemPool(int size)
     {
         // TODO:: Implement this
+
+        void *tmpPool = mempool;
+
 
     }
 
