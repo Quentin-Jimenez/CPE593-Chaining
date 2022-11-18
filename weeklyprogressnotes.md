@@ -17,3 +17,7 @@
 - Pulling example rope implementations and working on testing of performance etc. how it works
 - Mempool class for chain implementation
 - Scheduling w/ librarian
+
+## 11/18/22 Week 3
+- Continued Research
+- Create text test files of different sizes
