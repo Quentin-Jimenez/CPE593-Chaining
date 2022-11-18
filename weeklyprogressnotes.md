@@ -24,4 +24,4 @@
 - 
 
 ## 11/24/22 Week 4
--
+- Test Rope implementation (to be done)
