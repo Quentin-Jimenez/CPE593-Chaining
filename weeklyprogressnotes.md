@@ -21,3 +21,7 @@
 ## 11/18/22 Week 3
 - Continued Research
 - Create text test files of different sizes
+- 
+
+## 11/24/22 Week 4
+-
