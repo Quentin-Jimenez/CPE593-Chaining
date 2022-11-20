@@ -6,3 +6,6 @@
 # Ignore vscode configs for now
 */.vscode/*
 
+# Not sure what for but dont add this
+*.pub
+
