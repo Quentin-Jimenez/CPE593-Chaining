@@ -2,6 +2,7 @@
  * Code has been adapted and modifed for the use of our chain project
 */
 
+#include <algorithm>
 #include <iostream>
 
 using namespace std;
@@ -18,12 +19,53 @@ class Node
 
     public:
 
+        //TODO:: asusming key is going to be lineNumber, this will most likely change and will have to replace all
         //TODO:: May want to move some of this stuff to a C++ file for cleanliness :P
         Node(int minDegree, bool isLeaf) : minDegree(minDegree), isLeaf(isLeaf), numKeys(0)
         {
             keys = new int[ORDER_OF_N * minDegree - 1];
             childArr = new Node*[ORDER_OF_N * minDegree];
         }
+
+        void insertNonFull(int lineNumber)
+        {
+            int index = numKeys - 1;
+
+            if(true == isLeaf)
+            {   
+                // Search for position to insert key
+                while(index >= 0 && keys[index] > lineNumber)
+                {
+                    keys[index + 1] = keys[index];
+                    index--;
+                }
+
+                // Add key to the node
+                keys[index + 1] = lineNumber; 
+                numKeys += 1;
+            }
+            else
+            {
+                while(index >= 0 && keys[index] > lineNumber) index--;
+                
+                // Check if the cild is full
+                if(childArr[index + 1]->numKeys == 2*minDegree - 1)
+                {
+                    splitChild(index + 1, childArr[index + 1]);
+                }
+
+                if(keys[index + 1] < lineNumber) index++;
+
+                childArr[index + 1]->insertNonFull(lineNumber);
+            }
+        };
+
+        // Split child of parameter node in case more space is needed
+        void splitChild(int index, Node *node)
+        {
+            //TODO:: need to implement
+        };
+
 
         void traverseTree()
         {
