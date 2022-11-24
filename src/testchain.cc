@@ -30,7 +30,7 @@ void read_and_write_test(const char filename[], const char file2[]) {
 }
 	
 //read in a document and append size byte chunks of text num_appends times , then return the document
-chain appendtest(const char filename[], uint64_t num_appends, uint64_t size) {
+Chain appendtest(const char filename[], uint64_t num_appends, uint64_t size) {
     ifstream testDocFile (filename);
 
     while(testDocFile.is_open())
@@ -50,20 +50,26 @@ void inserttest(uint32_t append_size, uint32_t num_appends,
 int main() {
 	const char* str = "Hello, World!!";
     const char* other = "Lewin";
+    const char* another = "Lets go to disney";
 
-    avl_tree avl;
-    avl.insert(node ,"hello");
+    int minDegree = 2; //TODO:: Determine best mindegree
+    Chain chain(minDegree);
 
-    Rope r(str);
-    r.insert(5,other);
-    r.print_tree(std::cout);
+    chain.insert(0, str);
+    chain.insert(1, other);
+    chain.insert(2, another);
 
-	read_and_write_test("testdoc.txt", "chainResult.txt");
+
+ //   Rope r(str);
+  //  r.insert(5,other);
+   // r.print_tree(std::cout);
+
+//	read_and_write_test("testdoc.txt", "chainResult.txt");
 	
 	// read in 100MB document
-	appendtest("testDoc.txt", 1000000); 
+//	appendtest("testDoc.txt", 1000000); 
 
 	// build 100MB document with 1 million 100 byte appends
 	// then do 100MB of insertions
-	insertTest(100, 1000000, 100, 1000000);
+//	insertTest(100, 1000000, 100, 1000000);
 }

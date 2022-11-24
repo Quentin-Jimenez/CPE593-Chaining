@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 
@@ -12,11 +13,20 @@ class Node
 {
         public:
 
-        class LineKey
+        class LineKeyChar
         {
             int key;       // Key to insert into tree TBD maybe linenumber or pointer
-            char* line;    // Char * is a line from the text
+            const char* line;    // Char * is a line from the text
             int offset;    // Offset in mempool
+
+            friend class Node;
+        };
+
+        class LineKeyString
+        {
+            int key;
+            string line;
+            int offset;
 
             friend class Node;
         };
@@ -25,10 +35,11 @@ class Node
         //TODO:: May want to move some of this stuff to a C++ file for cleanliness :P
         Node(int minDegree, bool isLeaf) : minDegree(minDegree), isLeaf(isLeaf), numKeys(0)
         {
-            keys = new LineKey[ORDER_OF_N * minDegree - 1];  //TODO:: Check allocation
+            keys = new LineKeyChar[ORDER_OF_N * minDegree - 1];  //TODO:: Check allocation
             childArr = new Node*[ORDER_OF_N * minDegree];
         }
 
+        /* SETTERS AND GETTERS ****************************************************************/
         void setLineKey(Node *node, int index, int lineNumber, int offset, char *line)
         {
             node->keys[index].key = lineNumber;
@@ -36,13 +47,20 @@ class Node
             //node->keys[index].offset = offest;
         }
 
+        void setLineKey(Node *node, int index, int lineNumber, int offset, const string&)
+        {
+            //node->keys[index].key = lineNumber;
+            //node->keys[index].line = string;
+        }
+
         int getKey(Node *node, int index)
         {
             return node->keys[index].key;
         }
 
-        int getLine(Node *node, int index, int lineNumber)
+        const char * getLine(Node *node, int index, int lineNumber)
         {
+            return node->keys[index].line;
         }
 
         int getOffset(Node *node, int index)
@@ -50,7 +68,9 @@ class Node
             return node->keys[index].offset;
         }
 
-        void insertNonFull(int lineNumber)
+
+        /* FUNCTION CALLS ********************************************************************/
+        void insertNonFull(int lineNumber, const char *line)
         {
             int index = numKeys - 1;
 
@@ -65,6 +85,7 @@ class Node
 
                 // Add key to the node
                 keys[index + 1].key = lineNumber; 
+                keys[index + 1].line = line;
                 numKeys += 1;
             }
             else
@@ -144,7 +165,7 @@ class Node
         private:
         
         const int ORDER_OF_N = 4;
-        LineKey *keys;
+        LineKeyChar *keys;
         int minDegree;  
         bool isLeaf;  // Is node a leaf. If yes -> true
         int numKeys;

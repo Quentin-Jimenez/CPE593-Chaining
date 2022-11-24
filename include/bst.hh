@@ -16,6 +16,11 @@ class Chain // Chain is implemented using a b-tree
     public:
 
         Chain(int minDegree) : root(nullptr), minDegree(minDegree){};
+        //TODO:: Chain(unsigned int, const string&)
+        //TODO:: Chain(unsighned int, const Rope&)
+
+        ~Chain(void) {} ; //TODO:; Implement destructor
+
 
         Node *searchTree(int lineNumber) // TODO:: Need to figure out what we search by
         {
@@ -36,7 +41,8 @@ class Chain // Chain is implemented using a b-tree
         }
 
 
-        void insert(int lineNumber)
+        //TODO: implmenet insert for string type
+        /* void insert(int lineNumber, const string&)
         {
             if(nullptr == root)
             {
@@ -44,7 +50,7 @@ class Chain // Chain is implemented using a b-tree
                 char * line = "hello";
                 int index = 0;
                 root = new Node(minDegree, true);
-                root->setLineKey(root, index, lineNumber, offset, line);
+                root->setLineKey(root, index, lineNumber, offset, string);
                 //root->keys[0].key = lineNumber;
                 root->numKeys = 1;
             }
@@ -66,6 +72,38 @@ class Chain // Chain is implemented using a b-tree
                 else
                 {
                     root->insertNonFull(lineNumber);
+                }
+            }
+        } */
+
+        void insert(int lineNumber, const char* line)
+        {
+            if(nullptr == root)
+            {
+                int offset = 0;
+                int index = 0;
+                root = new Node(minDegree, true);
+                root->setLineKey(root, index, lineNumber, offset, line);
+                root->numKeys = 1;
+            }
+            else
+            {
+                if(root->numKeys == 2*minDegree - 1)
+                {
+                    Node *newRoot = new Node(minDegree, false);
+                    newRoot->childArr[0] = root;
+                    newRoot->splitChild(0, root);
+
+                    int index = 0;
+                    if(newRoot->getKey(newRoot, index) < lineNumber) index++;
+
+                    newRoot->childArr[index]->insertNonFull(lineNumber, line);
+
+                    root = newRoot;
+                }
+                else
+                {
+                    root->insertNonFull(lineNumber, line);
                 }
             }
         }
