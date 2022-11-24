@@ -79,14 +79,34 @@ class Node
 
                 if(keys[index + 1].key < lineNumber) index++;
 
-                childArr[index + 1]->insertNonFull(lineNumber);
+                childArr[index + 1]->insertNonFull(lineNumber, line);
             }
         };
 
         // Split child of parameter node in case more space is needed
         void splitChild(int index, Node *node)
         {
-            //TODO:: need to implement
+            Node *newNode = new Node(node->minDegree, node->isLeaf);
+            newNode->numKeys = minDegree - 1;
+
+            for(int iter = 0; iter < minDegree - 1; iter++) newNode->keys[iter] = node->keys[iter + minDegree];
+
+            if(!node->isLeaf)
+            {
+                for(int iter = 0; iter < minDegree; iter++) newNode->childArr[iter] = node->childArr[iter + minDegree];
+            }
+
+            node->numKeys = minDegree - 1;
+
+            for(int iter = numKeys; iter >= index + 1; iter--) childArr[index + 1] = childArr[iter];
+
+            childArr[index + 1] = newNode;
+
+            for(int iter = numKeys - 1; iter >= index; iter--) keys[iter + 1] = keys[iter];
+
+            keys[index] = node->keys[minDegree - 1];
+
+            numKeys = numKeys + 1;
         };
 
 
