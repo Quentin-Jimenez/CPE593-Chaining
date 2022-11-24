@@ -20,9 +20,12 @@
 
 ## 11/18/22 Week 3
 - Continued Research
+- Attended office hours for some further clarification
+- Created new diagram with draw.io (simple but will make more from this)
 - Create text test files of different sizes
 - Started work on b-tree structure. Implemented insertion and search. Used base from geeksforgeeks and changing for own structure
 - Working on testing with new structure
+
 
 ## 11/24/22 Week 4
 - Test Rope implementation (to be done)
