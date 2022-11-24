@@ -36,13 +36,39 @@ class Chain // Chain is implemented using a b-tree
         }
 
 
-        
+        void insert(int lineNumber)
+        {
+            if(nullptr == root)
+            {
+                int offset = 0;
+                char * line = "hello";
+                int index = 0;
+                root = new Node(minDegree, true);
+                root->setLineKey(root, index, lineNumber, offset, line);
+                //root->keys[0].key = lineNumber;
+                root->numKeys = 1;
+            }
+            else
+            {
+                if(root->numKeys == 2*minDegree - 1)
+                {
+                    Node *newRoot = new Node(minDegree, false);
+                    newRoot->childArr[0] = root;
+                    newRoot->splitChild(0, root);
 
+                    int index = 0;
+                    if(newRoot->getKey(newRoot, index) < lineNumber) index++;
 
+                    newRoot->childArr[index]->insertNonFull(lineNumber);
 
-
-
-
+                    root = newRoot;
+                }
+                else
+                {
+                    root->insertNonFull(lineNumber);
+                }
+            }
+        }
 };
         
 

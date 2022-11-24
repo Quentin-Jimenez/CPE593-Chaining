@@ -7,24 +7,47 @@
 
 using namespace std;
 
+
 class Node 
 {
-    private:
-        const int ORDER_OF_N = 4;
-        int *keys;
-        int minDegree;  
-        bool isLeaf;  // Is node a leaf. If yes -> true
-        int numKeys;
-        Node **childArr; // Array of child ptrs
+        public:
 
-    public:
+        class LineKey
+        {
+            int key;       // Key to insert into tree TBD maybe linenumber or pointer
+            char* line;    // Char * is a line from the text
+            int offset;    // Offset in mempool
+
+            friend class Node;
+        };
 
         //TODO:: asusming key is going to be lineNumber, this will most likely change and will have to replace all
         //TODO:: May want to move some of this stuff to a C++ file for cleanliness :P
         Node(int minDegree, bool isLeaf) : minDegree(minDegree), isLeaf(isLeaf), numKeys(0)
         {
-            keys = new int[ORDER_OF_N * minDegree - 1];
+            keys = new LineKey[ORDER_OF_N * minDegree - 1];  //TODO:: Check allocation
             childArr = new Node*[ORDER_OF_N * minDegree];
+        }
+
+        void setLineKey(Node *node, int index, int lineNumber, int offset, char *line)
+        {
+            node->keys[index].key = lineNumber;
+            //node->keys[index].line = string;
+            //node->keys[index].offset = offest;
+        }
+
+        int getKey(Node *node, int index)
+        {
+            return node->keys[index].key;
+        }
+
+        int getLine(Node *node, int index, int lineNumber)
+        {
+        }
+
+        int getOffset(Node *node, int index)
+        {
+            return node->keys[index].offset;
         }
 
         void insertNonFull(int lineNumber)
@@ -34,19 +57,19 @@ class Node
             if(true == isLeaf)
             {   
                 // Search for position to insert key
-                while(index >= 0 && keys[index] > lineNumber)
+                while(index >= 0 && keys[index].key > lineNumber)
                 {
                     keys[index + 1] = keys[index];
                     index--;
                 }
 
                 // Add key to the node
-                keys[index + 1] = lineNumber; 
+                keys[index + 1].key = lineNumber; 
                 numKeys += 1;
             }
             else
             {
-                while(index >= 0 && keys[index] > lineNumber) index--;
+                while(index >= 0 && keys[index].key > lineNumber) index--;
                 
                 // Check if the cild is full
                 if(childArr[index + 1]->numKeys == 2*minDegree - 1)
@@ -54,7 +77,7 @@ class Node
                     splitChild(index + 1, childArr[index + 1]);
                 }
 
-                if(keys[index + 1] < lineNumber) index++;
+                if(keys[index + 1].key < lineNumber) index++;
 
                 childArr[index + 1]->insertNonFull(lineNumber);
             }
@@ -86,10 +109,10 @@ class Node
         {
             int treeIter;
 
-            while( treeIter < numKeys && lineNumber > keys[treeIter]) treeIter++;
+            while( treeIter < numKeys && lineNumber > keys[treeIter].key) treeIter++;
 
             // Key is found yay -> return the node
-            if(keys[treeIter] == lineNumber) return this;
+            if(keys[treeIter].key == lineNumber) return this;
 
             // At a leaf so we couldn't fine it return null
             if(isLeaf) return nullptr;
@@ -97,6 +120,15 @@ class Node
             // Search the next child
             return childArr[treeIter]->searchTree(lineNumber);
         } 
+
+        private:
+        
+        const int ORDER_OF_N = 4;
+        LineKey *keys;
+        int minDegree;  
+        bool isLeaf;  // Is node a leaf. If yes -> true
+        int numKeys;
+        Node **childArr; // Array of child ptrs
                                          
         friend class Chain;
 };
