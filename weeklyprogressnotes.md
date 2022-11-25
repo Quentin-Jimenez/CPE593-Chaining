@@ -29,3 +29,7 @@
 
 ## 11/24/22 Week 4
 - Test Rope implementation (to be done)
+- Created new diagram with draw.io for B-tree
+- Connected with Rope team to benchmark test result against theirs
+- Implemented insert function for B-tree
+- Wrote main functions for reading lines from text files
