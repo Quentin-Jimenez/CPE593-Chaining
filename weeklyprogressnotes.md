@@ -33,3 +33,7 @@
 - Connected with Rope team to benchmark test result against theirs
 - Implemented insert function for B-tree
 - Wrote main functions for reading lines from text files
+
+## 12/01/22 Week 5
+- todo- create atleast 2-3 drawings of btree and 2 for mempools
+      - use the interactive Btree website to create a gif for Nodesplit
