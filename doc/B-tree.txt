@@ -1,22 +1,55 @@
+// todo- create
 B-Tree B-tree is a self-balancing tree data structure that maintains sorted data and allows searches, sequential access,
 insertions, and deletions in logarithmic time. The B-tree generalizes the binary search tree, allowing for nodes with more 
 than two children.[2] Unlike other self-balancing binary search trees, the B-tree is well suited for storage systems that
 read and write relatively large blocks of data, such as databases and file systems.
 
-Time Complexity
+Why B-Trees ?
+Disk access time is very high compared to the main memory access time. The main idea of using B-Trees is to reduce the number
+of disk accesses. Most of the tree operations (search, insert, delete, max, min, ..etc ) require O(h) disk accesses where h is
+the height of the tree. B-tree is a fat tree. The height of B-Trees is kept low by putting the maximum possible keys in a
+B-Tree node. Generally, the B-Tree node size is kept equal to the disk block size. Since the height of the B-tree is low so total
+disk accesses for most of the operations are reduced significantly compared to balanced Binary Search Trees like AVL Tree,
+Red-Black Tree, etc.
+
+Time Complexity:
 	  Average      Worst Case
 Space      O(n)         O(n)
 Search     O(logn)	O(logn)
 Insert	   O(logn)	O(logn)
 Delete	   O(logn)	O(logn)
 
+where n= total number of elements in a tree.
 
 Terminology:
 1. 
 
 
 Properties:
+1. All leaf nodes are at the same level.
+2. B-Tree is characterized by the term minimum degree ‘t‘. The value of ‘t‘ depends upon disk block size.
+3. Every node except the root must contain at least t-1 keys. The root may contain a minimum of 1 key.
+4. All nodes (including root) may contain at most (2*t – 1) keys.
+5. Number of children of a node is equal to the number of keys in it plus 1.
+6. All keys of a node are sorted in increasing order. The child between two keys k1 and k2 contains 
+   all keys in the range from k1 and k2.
+7. Insertion of a Node in B-Tree happens only at Leaf Node.
+8. The minimum height of the B-Tree that can exist with n number of nodes and m is the maximum number 
+   of children of a node can have is:  h_{min} =\lceil\log_m (n + 1)\rceil - 1    
+9. The maximum height of the B-Tree that can exist with n number of nodes and t is the minimum number of 
+    children that a non-root node can 
+    have is:  h_{max} =\lfloor\log_t\frac {n + 1}{2}\rfloor  and  t = \lceil\frac {m}{2}\rceil
+10.
 
+Methods:
+1. Traverse:
+
+
+2. Search
+
+3. Insert
+
+4. Delete
 
 
 
@@ -25,3 +58,5 @@ References:
 1. https://en.wikipedia.org/wiki/B-tree
 2. The art of computer programming- Donald E Knuth
 3. https://www.geeksforgeeks.org/introduction-of-b-tree-2/
+4. CLRS
+5. IIT-Delhi: https://www.youtube.com/watch?v=JZhdUb5F7oY
