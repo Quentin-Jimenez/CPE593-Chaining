@@ -1,0 +1,11 @@
+1.2 (2/23/11)
+	Optimized where first allocation goes
+	Added a dump mechanism in debugging mode
+1.1 (9/2/11)
+	Added reallocate method for Bucket Pools
+    Added realloc to callbacks
+1.0 (9/1/11)
+	Initial release
+	Block Pool
+	Object Pool
+	10 Bucket Pools
