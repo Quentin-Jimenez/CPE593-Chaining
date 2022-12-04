@@ -62,11 +62,14 @@ int main() {
   int minDegree = 3;  // TODO:: Determine best mindegree
   Chain chain(minDegree);
 
-  for (int i = 1; i < 10000; i = i + 3) {
+  for (int i = 1; i < 100; i = i + 3) {
     chain.insert(i, str);
     chain.insert(i + 1, other);
     chain.insert(i + 2, another);
   }
+
+  cout << "Traversal of the constructed tree is ";
+  chain.traverseTree();
   // chain.insert(0, str);
   // chain.insert(1, other);
   // chain.insert(2, another);
@@ -96,4 +99,5 @@ int main() {
   // build 100MB document with 1 million 100 byte appends
   // then do 100MB of insertions
   //	insertTest(100, 1000000, 100, 1000000);
+  return 0;
 }

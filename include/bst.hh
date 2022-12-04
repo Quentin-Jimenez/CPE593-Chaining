@@ -44,7 +44,7 @@ class Chain  // Chain is implemented using a b-tree
     }
   }
 
-  // Copes chain into new memory pool
+  // Copies chain into new memory pool
   void copy(char *, unsigned int) const;
 
   // Compresses chain into 1 string

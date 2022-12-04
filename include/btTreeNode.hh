@@ -327,6 +327,7 @@ class Node {
       if (false == isLeaf) {
         childArr[treeIter]->traverseTree();
       }
+      cout << " " << keys[treeIter].key << "->" << keys[treeIter].line << '\n';
     }
 
     // subtree of last child TODO:: Test with <= above so we dont have to do
