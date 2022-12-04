@@ -47,10 +47,10 @@ class Node
             //node->keys[index].offset = offest;
         }
 
-        void setLineKey(Node *node, int index, int lineNumber, int offset, const string&)
+        void setLineKey(Node *node, int index, int lineNumber, int offset, const string s)
         {
-            //node->keys[index].key = lineNumber;
-            //node->keys[index].line = string;
+            node->keys[index].key = lineNumber;
+            node->keys[index].line = s.c_str();
         }
 
         int getKey(Node *node, int index)
@@ -58,7 +58,7 @@ class Node
             return node->keys[index].key;
         }
 
-        const char * getLine(Node *node, int index, int lineNumber)
+        const char * getLine(Node *node, int index)
         {
             return node->keys[index].line;
         }

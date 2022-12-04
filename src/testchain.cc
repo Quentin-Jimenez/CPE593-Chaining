@@ -62,11 +62,21 @@ int main() {
   int minDegree = 2;  // TODO:: Determine best mindegree
   Chain chain(minDegree);
 
+  int a = 0;
+  //cin >> a;
+  
   chain.insert(0, str);
   chain.insert(1, other);
   chain.insert(2, another);
+  chain.printTree();
 
-  // chain.showTree();
+/*
+  for(int i=0;i<20; i++){
+    cout << i << '\n';
+    chain.insert(i, str);
+  }
+*/
+  //chain.printTree();
 
   //   Rope r(str);
   //  r.insert(5,other);

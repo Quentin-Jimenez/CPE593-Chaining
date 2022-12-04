@@ -41,14 +41,11 @@ class Chain // Chain is implemented using a b-tree
             if(node) // if not nullptr
             {
                 int index;
-                for(index = 1; index <= root->numKeys; index++)
+                for(index = 0; index < root->numKeys; index++)
                 {
-                    cout << "Value" << root->getKey(node, index) << endl;
-                    if(root->childArr[index - 1])
-                        showTree(node->childArr[index - 1]);
+                    cout << "Value : " << root->getLine(node, index) << endl;
+                    cout << " | " << endl << " \\/" << endl;
                 }
-                if(root->childArr[index])
-                    showTree(node->childArr[index]);
             }
         }
 
