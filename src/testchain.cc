@@ -44,7 +44,7 @@ void inserttest(uint32_t append_size, uint32_t num_appends,
 
 void testHashing() {
   hashing h;
-  const char* str = "Test string";
+  const char* str = "Teststring";
   uint64_t hash1 = h.hash64bit(str);
   cout << "64 bit hash key is : " << hash1 << '\n';
   unsigned long hash2 = h.hash32bit(str);
@@ -57,14 +57,30 @@ int main() {
   const char* another = "Lets go to disney";
 
   // Test Hashing functions
-  testHashing();
+  // testHashing();
 
-  int minDegree = 2;  // TODO:: Determine best mindegree
+  int minDegree = 3;  // TODO:: Determine best mindegree
   Chain chain(minDegree);
 
-  chain.insert(0, str);
-  chain.insert(1, other);
-  chain.insert(2, another);
+  for (int i = 1; i < 10000; i = i + 3) {
+    chain.insert(i, str);
+    chain.insert(i + 1, other);
+    chain.insert(i + 2, another);
+  }
+  // chain.insert(0, str);
+  // chain.insert(1, other);
+  // chain.insert(2, another);
+
+  // chain.insert(10, str);
+  // chain.insert(20, other);
+  // chain.insert(5, another);
+  // chain.insert(6, str);
+  // chain.insert(12, other);
+  // chain.insert(30, another);
+  // chain.insert(17, str);
+  // chain.insert(13, other);
+  // chain.insert(7, another);
+  // chain.traverseTree();
 
   // chain.showTree();
 
