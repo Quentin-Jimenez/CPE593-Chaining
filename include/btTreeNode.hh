@@ -335,10 +335,10 @@ class Node {
     if (false == isLeaf) childArr[treeIter]->traverseTree();
   };
 
-  Node *searchTree(
-      int lineNumber)  // TODO:: Do we want to search by line number or word?
+  Node *searchTree(int lineNumber)
+  // TODO:: Do we want to search by line number or word?
   {
-    int treeIter;
+    int treeIter = 0;
 
     while (treeIter < numKeys && lineNumber > keys[treeIter].key) treeIter++;
 

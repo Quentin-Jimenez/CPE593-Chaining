@@ -53,8 +53,8 @@ void testHashing() {
 
 int main() {
   const char* str = "Hello, World!!";
-  const char* other = "Lewin";
-  const char* another = "Lets go to disney";
+  const char* other = "What's up?";
+  const char* another = "Lets go to LaLaLand.";
 
   // Test Hashing functions
   // testHashing();
@@ -68,8 +68,8 @@ int main() {
     chain.insert(i + 2, another);
   }
 
-  cout << "Traversal of the constructed tree is ";
-  chain.traverseTree();
+  // cout << "Traversal of the constructed tree is ";
+  // chain.traverseTree();
   // chain.insert(0, str);
   // chain.insert(1, other);
   // chain.insert(2, another);

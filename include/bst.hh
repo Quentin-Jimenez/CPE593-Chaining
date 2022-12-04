@@ -53,14 +53,21 @@ class Chain  // Chain is implemented using a b-tree
   // B-tree Functions based from
   // https://www.geeksforgeeks.org/introduction-of-b-tree-2 *********
 
-  Node *searchTree(
-      int lineNumber)  // TODO:: Need to figure out what we search by
-  {
-    if (nullptr == root) {
-      return nullptr;  // Key was not found
-    } else {
-      root->searchTree(lineNumber);  // Keep searching
-    }
+  // Node *searchTree(
+  //     int lineNumber)  // TODO:: Need to figure out what we search by
+  // {
+  //   if (nullptr == root) {
+  //     return nullptr;  // Key was not found
+  //   } else {
+  //     return (root->searchTree(lineNumber));  // Keep searching
+  //   }
+  // }
+
+  // same thing as above, just changed the structure,
+  // the above block throws a non-void return warning
+  // TODO:: Need to figure out what we search by
+  Node *searchTree(int lineNumber) {
+    return (root == nullptr) ? nullptr : root->searchTree(lineNumber);
   }
 
   /* All this function is dooing is going from node to node until reaching the
