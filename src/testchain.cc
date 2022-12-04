@@ -61,20 +61,19 @@ int main() {
 
   int minDegree = 3;  // TODO:: Determine best mindegree
   Chain chain(minDegree);
-
-  int a = 0;
-  //cin >> a;
   
   chain.insert(0, str);
   chain.insert(1, other);
   chain.insert(2, another);
   chain.printTree();
+  /*
 
   for (int i = 1; i < 100; i = i + 3) {
     chain.insert(i, str);
     chain.insert(i + 1, other);
     chain.insert(i + 2, another);
   }
+*/
 
   // cout << "Traversal of the constructed tree is ";
   // chain.traverseTree();

@@ -60,7 +60,7 @@ class Node {
 
   int getKey(Node *node, int index) { return node->keys[index].key; }
 
-  const char *getLine(Node *node, int index, int lineNumber) {
+  const char *getLine(Node *node, int index) {
     return node->keys[index].line;
   }
 
