@@ -75,8 +75,9 @@ int main() {
   }
 */
 
-  // cout << "Traversal of the constructed tree is ";
-  // chain.traverseTree();
+  chain.remove(3);
+  cout << "Traversal of the constructed tree is: " << '\n';
+  chain.traverseTree();
   // chain.insert(0, str);
   // chain.insert(1, other);
   // chain.insert(2, another);

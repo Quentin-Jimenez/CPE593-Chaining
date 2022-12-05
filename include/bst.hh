@@ -144,6 +144,7 @@ class Chain  // Chain is implemented using a b-tree
   // Remove based on key
   void remove(int lineNumber) {
     if (!root) {
+      cout << "The tree is empty\n";
       return;
     }
 

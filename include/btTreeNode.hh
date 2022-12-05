@@ -95,6 +95,7 @@ class Node {
     } else {
       if (isLeaf)  // No key here
       {
+        cout << "The key " << lineNumber << "  does not exist in the tree\n";
         return;
       }
 
@@ -164,7 +165,7 @@ class Node {
   }
 
   void fillChildNode(int pos) {
-    if (0 != pos && childArr[pos + 1]->numKeys >= minDegree) {
+    if (0 != pos && childArr[pos - 1]->numKeys >= minDegree) {
       borrowFromPrev(pos);
     } else if (numKeys != pos && childArr[pos + 1]->numKeys >= minDegree) {
       borrowFromNext(pos);
@@ -239,6 +240,8 @@ class Node {
     return;
   }
 
+  // A function to merge childArr[pos] with childArr[pos + 1]
+  // childArr[pos + 1] is freed after merging
   void merge(int pos) {
     Node *child = childArr[pos];
     Node *sibling = childArr[pos + 1];
@@ -246,20 +249,20 @@ class Node {
     child->keys[minDegree - 1] = keys[pos];
 
     // Copying the keys from C[pos+1] to C[pos] at the end
-    for (int i = 0; i < sibling->numKeys; i++)
+    for (int i = 0; i < sibling->numKeys; ++i)
       child->keys[i + minDegree] = sibling->keys[i];
 
     // Copying the child pointers from C[pos+1] to C[pos]
     if (!child->isLeaf) {
-      for (int i = 0; i <= sibling->numKeys; i++)
+      for (int i = 0; i <= sibling->numKeys; ++i)
         child->childArr[i + minDegree] = sibling->childArr[i];
     }
 
-    for (int i = pos + 1; i < numKeys; i++) keys[i - 1] = keys[i];
+    for (int i = pos + 1; i < numKeys; ++i) keys[i - 1] = keys[i];
 
     // Moving the child pointers after (pos+1) in the current node one
     // step before
-    for (int i = pos + 2; i <= numKeys; i++) childArr[i - 1] = childArr[i];
+    for (int i = pos + 2; i <= numKeys; ++i) childArr[i - 1] = childArr[i];
 
     // Updating the key count of child and the current node
     child->numKeys += sibling->numKeys + 1;
@@ -332,6 +335,7 @@ class Node {
       if (false == isLeaf) {
         childArr[treeIter]->traverseTree();
       }
+      // cout << " " << keys[treeIter].key << '\n';
       cout << " " << keys[treeIter].key << "->" << keys[treeIter].line << '\n';
     }
 
