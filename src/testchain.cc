@@ -52,8 +52,8 @@ void testHashing() {
 }
 
 int main() {
-  const char* str = "Hello, World!!";
-  const char* other = "What's up?";
+  const char* str = "Hello, World!";
+  const char* other = "Welcome aboard:";
   const char* another = "Lets go to LaLaLand.";
 
   // Test Hashing functions
@@ -61,21 +61,19 @@ int main() {
 
   int minDegree = 3;  // TODO:: Determine best mindegree
   Chain chain(minDegree);
-  
-  chain.insert(0, str);
-  chain.insert(1, other);
-  chain.insert(2, another);
-  chain.printTree();
-  /*
+
+  // chain.insert(0, str);
+  // chain.insert(1, other);
+  // chain.insert(2, another);
+  // chain.printTree();
 
   for (int i = 1; i < 100; i = i + 3) {
     chain.insert(i, str);
     chain.insert(i + 1, other);
     chain.insert(i + 2, another);
   }
-*/
 
-  chain.remove(3);
+  chain.remove(54);
   cout << "Traversal of the constructed tree is: " << '\n';
   chain.traverseTree();
   // chain.insert(0, str);
@@ -93,13 +91,13 @@ int main() {
   // chain.insert(7, another);
   // chain.traverseTree();
 
-/*
-  for(int i=0;i<20; i++){
-    cout << i << '\n';
-    chain.insert(i, str);
-  }
-*/
-  //chain.printTree();
+  /*
+    for(int i=0;i<20; i++){
+      cout << i << '\n';
+      chain.insert(i, str);
+    }
+  */
+  // chain.printTree();
 
   //   Rope r(str);
   //  r.insert(5,other);

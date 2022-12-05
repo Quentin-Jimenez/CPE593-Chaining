@@ -52,17 +52,15 @@ class Node {
   //   // node->keys[index].key = lineNumber;
   //   // node->keys[index].line = string;
   // }
-        void setLineKey(Node *node, int index, int lineNumber, int offset, const string s)
-        {
-            node->keys[index].key = lineNumber;
-            node->keys[index].line = s.c_str();
-        }
+  void setLineKey(Node *node, int index, int lineNumber, int offset,
+                  const string s) {
+    node->keys[index].key = lineNumber;
+    node->keys[index].line = s.c_str();
+  }
 
   int getKey(Node *node, int index) { return node->keys[index].key; }
 
-  const char *getLine(Node *node, int index) {
-    return node->keys[index].line;
-  }
+  const char *getLine(Node *node, int index) { return node->keys[index].line; }
 
   int getOffset(Node *node, int index) { return node->keys[index].offset; }
 
@@ -76,9 +74,7 @@ class Node {
 
   int findKey(int lineNumber) {
     int pos = 0;
-    while (pos < numKeys && keys[pos].key < lineNumber) {
-      pos++;
-    }
+    while (pos < numKeys && keys[pos].key < lineNumber) ++pos;
     return pos;
   }
 
@@ -116,7 +112,7 @@ class Node {
   }
 
   void removeFromLeaf(int pos) {
-    for (int i = pos + 1; i < numKeys; i++) {
+    for (int i = pos + 1; i < numKeys; ++i) {
       keys[i - 1] = keys[i];
     }
 
@@ -127,13 +123,15 @@ class Node {
   void removeFromNonLeaf(int pos) {
     int lineNumber = keys[pos].key;
 
-    if (childArr[pos]->numKeys > -minDegree) {
-      int prev = getPrev(pos);
+    if (childArr[pos]->numKeys >= minDegree) {
+      int prev = getPrevKey(pos);
       keys[pos].key = prev;
+      keys[pos].line = getPrevLine(pos);
       childArr[pos]->remove(prev);
     } else if (childArr[pos + 1]->numKeys >= minDegree) {
-      int next = getNext(pos);
+      int next = getNextKey(pos);
       keys[pos].key = next;
+      keys[pos].line = getNextLine(pos);
       childArr[pos + 1]->remove(next);
     } else {
       merge(pos);
@@ -142,26 +140,57 @@ class Node {
     return;
   }
 
-  int getPrev(int pos) {
-    Node *curNode = childArr[pos + 1];
+  // A function to get previous position
+  int getPrevKey(int pos) {
+    // Keep moving to the right most node until we reach a leaf
+    Node *curNode = childArr[pos];
 
     // Indexing until isLeaf == true
     while (!curNode->isLeaf) {
       curNode = curNode->childArr[curNode->numKeys];
     }
-
+    // Return the last key of the leaf
     return curNode->keys[curNode->numKeys - 1].key;
   }
 
-  int getNext(int pos) {
+  // Return line
+  const char *getPrevLine(int pos) {
+    // Keep moving to the right most node until we reach a leaf
+    Node *curNode = childArr[pos];
+
+    // Indexing until isLeaf == true
+    while (!curNode->isLeaf) {
+      curNode = curNode->childArr[curNode->numKeys];
+    }
+    // Return the last key of the leaf
+    return curNode->keys[curNode->numKeys - 1].line;
+  }
+
+  int getNextKey(int pos) {
+    // Keep moving the left most node starting from childArr[pos + 1] until we
+    // reach a leaf
     Node *curNode = childArr[pos + 1];
 
     // Indexing left until isLeaf == true
     while (!curNode->isLeaf) {
       curNode = curNode->childArr[0];
     }
-
+    // Return the first key of the leaf
     return curNode->keys[0].key;
+  }
+
+  // Return line
+  const char *getNextLine(int pos) {
+    // Keep moving the left most node starting from childArr[pos + 1] until we
+    // reach a leaf
+    Node *curNode = childArr[pos + 1];
+
+    // Indexing left until isLeaf == true
+    while (!curNode->isLeaf) {
+      curNode = curNode->childArr[0];
+    }
+    // Return the first key of the leaf
+    return curNode->keys[0].line;
   }
 
   void fillChildNode(int pos) {
@@ -176,6 +205,7 @@ class Node {
         merge(pos - 1);
       }
     }
+    return;
   }
 
   void borrowFromPrev(int pos) {

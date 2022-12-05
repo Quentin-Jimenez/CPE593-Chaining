@@ -30,20 +30,18 @@ class Chain  // Chain is implemented using a b-tree
     return root->numKeys;  // TODO:: verify this
   }
 
-        /* TODO:: Since large files will need to take a page number input */
-        void showTree(Node *node)
-        {
-            cout << "Tree" << endl;
-            if(node) // if not nullptr
-            {
-                int index;
-                for(index = 0; index < root->numKeys; index++)
-                {
-                    cout << "Value : " << root->getLine(node, index) << endl;
-                    cout << " | " << endl << " \\/" << endl;
-                }
-            }
-        }
+  /* TODO:: Since large files will need to take a page number input */
+  void showTree(Node *node) {
+    cout << "Tree" << endl;
+    if (node)  // if not nullptr
+    {
+      int index;
+      for (index = 0; index < root->numKeys; index++) {
+        cout << "Value : " << root->getLine(node, index) << endl;
+        cout << " | " << endl << " \\/" << endl;
+      }
+    }
+  }
 
   // Copies chain into new memory pool
   void copy(char *, unsigned int) const;
@@ -160,5 +158,6 @@ class Chain  // Chain is implemented using a b-tree
 
       delete tmpNode;
     }
+    return;
   }
 };
