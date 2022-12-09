@@ -11,16 +11,25 @@ using namespace std;
 
 // read in document and save it out to disk again under a new name
 void read_and_write_test(const char filename[], const char file2[]) {
+  Chain chain(3);
   string fileString;
   ifstream testDocFile(filename);
   ofstream outputFile(file2);
 
-  while (testDocFile.is_open()) {
+  int count = 0;
+  while (!testDocFile.eof()) {
     testDocFile >> fileString;
+    chain.insert(count, fileString.c_str());
+    count++;
   }
+
+  
+  chain.printTree();
+
 
   if (outputFile.is_open()) {
     // outputFile << TODO:: write what is needed to file
+    cout << "end" << endl;
   }
 
   testDocFile.close();
@@ -62,11 +71,15 @@ int main() {
   int minDegree = 3;  // TODO:: Determine best mindegree
   Chain chain(minDegree);
 
+
+  read_and_write_test("../testTextFiles/sourceFiles/en213k.txt", "out.txt");
+
   // chain.insert(0, str);
   // chain.insert(1, other);
   // chain.insert(2, another);
   // chain.printTree();
 
+  /*
   for (int i = 1; i < 100; i = i + 3) {
     chain.insert(i, str);
     chain.insert(i + 1, other);
@@ -76,20 +89,7 @@ int main() {
   chain.remove(54);
   cout << "Traversal of the constructed tree is: " << '\n';
   chain.traverseTree();
-  // chain.insert(0, str);
-  // chain.insert(1, other);
-  // chain.insert(2, another);
-
-  // chain.insert(10, str);
-  // chain.insert(20, other);
-  // chain.insert(5, another);
-  // chain.insert(6, str);
-  // chain.insert(12, other);
-  // chain.insert(30, another);
-  // chain.insert(17, str);
-  // chain.insert(13, other);
-  // chain.insert(7, another);
-  // chain.traverseTree();
+  */
 
   /*
     for(int i=0;i<20; i++){
@@ -97,6 +97,7 @@ int main() {
       chain.insert(i, str);
     }
   */
+
   // chain.printTree();
 
   //   Rope r(str);
