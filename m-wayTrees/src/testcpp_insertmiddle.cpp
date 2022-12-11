@@ -2,7 +2,6 @@
 #include <string.h>
 
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 const int M = 4;
@@ -55,6 +54,26 @@ class Chain {
     cout << endl;
 
     // cout << root->nextNode[0]->nextLeaf[0]->lines[0];
+  }
+  void insertMiddle(string line, int pos) {
+    InternalNode *currNode = root;
+    LeafNode *currLeaf;
+    int currNodeIndex;
+    int tempCount = 0;  // keeps the count of the the roots
+    for (int i = 0; i < M; i++) {
+      tempCount += currNode->count[i];
+      if (tempCount > pos) {
+        // insert in this node
+        currNodeIndex = i;
+        break;
+      }
+    }
+    if (currNode->isLeafNode == true) {
+      currLeaf = currNode->nextLeaf[currNodeIndex];
+    }
+    int currLeafIndex = (pos % M) - 1;  // to adjust 0 index
+    currLeaf->lines[currLeafIndex] = line;
+    currLeaf->count += 1;
   }
 
   // Inserts a value in the m-Way tree
@@ -161,44 +180,13 @@ class Chain {
     tempHeadNode->nextNode[0] = newNodeLeft;
     tempHeadNode->nextNode[1] = newNodeRight;
 
-        deleteLeafNodes(tempHeadNode);
-
-        head = tempHeadNode;
-        cout << endl;
-        cout << "Test" << head->nextNode[0]->nextLeaf[0]->lines[0] << endl;
-    }
-
-    void remove(int pos){
-
-        int totallines = 0;
-        for(int i=0; i < M; i++){
-            totallines += root->count[i];
-        }
-         
-        root->nextLeaf[pos/M]->lines[pos%M] = ""; // Erase requested line
-        pos++;
-
-        // Update position of other lines
-        string hold = "";
-        for(int i = pos; i < totallines; i++){
-            cout << (i-1)/M << " " << (i-1)%M << endl;
-            root->nextLeaf[(i-1)/M]->lines[(i-1)%M] = root->nextLeaf[i/M]->lines[i%M];
-        }
-
-        // Clear final line and update count
-        root->nextLeaf[(totallines-1)/M]->lines[(totallines-1)%M] = "";
-        root->count[(totallines-1)/M]--;
-        root->nextLeaf[(totallines-1)/M]->count--;
-
-    }
+    deleteLeafNodes(tempHeadNode);
 
     head = tempHeadNode;
     cout << endl;
     cout << "Test" << head->nextNode[0]->nextLeaf[0]->lines[0] << endl;
   }
 };
-
-
 
 int main() {
   Chain c;
@@ -212,40 +200,23 @@ int main() {
   c.insertEnd(another);
   c.insertEnd(yetanother);
   c.insertEnd(str);
-  c.insertEnd(other);
   c.insertEnd(another);
-  c.insertEnd(yetanother);
-  c.insertEnd(str);
-  c.insertEnd(other);
-  c.insertEnd(another);
-  c.insertEnd(yetanother);
-  c.insertEnd(str);
-  c.insertEnd(other);
-  c.insertEnd(another);
-  c.insertEnd(yetanother);
-    c.insertEnd("a01");
-    c.insertEnd("b02");
-    c.insertEnd("c03");
-    //c.printTree();
-    c.insertEnd("d04");
-    c.insertEnd("e05");
-    c.insertEnd("f06");
-    c.insertEnd("g07");
-    c.remove(3);
-    c.insertEnd("h08");
-    c.insertEnd("i09");
-    c.insertEnd("j10");
-    c.insertEnd("k11");
-    c.insertEnd("l12");
-    c.insertEnd("m13");
-    c.insertEnd("n14");
-    c.insertEnd("o15");
-    c.insertEnd("p16");
 
+  c.insertMiddle(other, 5);
+  // c.insertEnd(other);
+  // c.insertEnd(yetanother);
+  // c.insertEnd(str);
+  // c.insertEnd(another);
+  // c.insertEnd(other);
+  // c.insertEnd(yetanother);
+  // c.insertEnd(str);
+  // c.insertEnd(other);
+  // c.insertEnd(another);
+  // c.insertEnd(yetanother);
 
-    //string thisNew = " Tryhing to split";
-    //c.insertEnd(thisNew);
+  // string thisNew = " Tryhing to split";
+  // c.insertEnd(thisNew);
 
-  c.printTree();
+  // c.printTree();
   return 0;
 }
