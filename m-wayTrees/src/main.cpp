@@ -76,24 +76,26 @@ class Chain {
 
       leafNode* nextLeaf = new leafNode();
       uint32_t leafIndex = 0;
-    
+
       while (1) {
         if (nextInternalNode->pointLeaf == true) {
           // leafIndex = nextInternalNode->coun
-            for (int i = 0; i < M; i++) {
-                if (nextInternalNode->count[i] < M) {
-                    leafIndex += nextInternalNode->count[i];
-                    nextLeaf->lines[leafIndex] = line;
-                    nextLeaf->isleaf = true;
-                    break;
-                }
+          for (int i = 0; i < M; i++) {
+            if (nextInternalNode->count[i] < M) {
+              leafIndex = nextInternalNode->count[i];
+              nextLeaf->lines[leafIndex] = line;
+              nextLeaf->isleaf = true;
+              nextInternalNode->nextLeaf = nextLeaf;
+              leafIndex = 0;
+              break;
             }
-          
+          }
+
         } else {
           for (int i = M - 1; i >= 0; i--) {
             if (nextInternalNode->count[i] != 0) {
               nextInternalNode = nextInternalNode->nextNode[i];
-              leafIndex += nextInternalNode->count[i];
+              // leafIndex += nextInternalNode->count[i];
               break;
             }
           }
