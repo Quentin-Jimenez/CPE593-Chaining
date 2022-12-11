@@ -15,7 +15,6 @@ class Chain {
     friend class Chain;
   };
   class internalNode {
-    internalNode *head;
     leafNode* nextLeaf[M];
     internalNode* nextNode[M];
     uint32_t count[M] = {0};
@@ -71,82 +70,75 @@ class Chain {
 
 
   void insertEnd(string line) {
-    // internalNode* temp = new internalNode;
-    if (root == nullptr) {
+
       internalNode* temp = new internalNode();
-      internalNode* inode = new internalNode();
-      leafNode* leaf = new leafNode();
-      setLeaf(line, 0, leaf);
-      // leaf->isleaf = true;
-      // leaf->lines[0] = line;
-      temp->nextNode[0] = inode;
-      inode->nextLeaf[0] = leaf;
-      inode->pointLeaf = true;
-      temp->count[0] += 1;
-      inode->count[0] += 1;
-      root = temp;
-    } else {
-     
-      internalNode* nextInternalNode = new internalNode();
-      nextInternalNode->head = root;
-      // to get hold of the last available block
-      for (int i = M - 1; i >= 0; i--) {
-        if (root->count[i] != 0) {
-          nextInternalNode = root->nextNode[i];
-          break;
-        }
-      }
+      if (root == nullptr) {
+          internalNode* inode = new internalNode();
+          leafNode* leaf = new leafNode();
+          setLeaf(line, 0, leaf);
+          // leaf->isleaf = true;
+          // leaf->lines[0] = line;
+          temp->nextNode[0] = inode;
+          inode->nextLeaf[0] = leaf;
+          inode->pointLeaf = true;
+          temp->count[0] += 1;
+          inode->count[0] += 1;
+          root = temp;
+      } else {
 
-      leafNode* nextLeaf = new leafNode();
-      
-      uint32_t leafIndex = 0;
-      bool insertComplete = false;
-
-      
-      internalNode* tmpInternalNode = new internalNode();
-
-      while (!insertComplete) {
-        if (nextInternalNode->pointLeaf == true) {
-          // leafIndex = nextInternalNode->coun
-          for (int i = 0; i < M; i++) 
-          {
-            if (nextInternalNode->count[i] < M) {
-              leafIndex = nextInternalNode->count[i];
-              nextLeaf->lines[leafIndex] = line;
-              nextLeaf->isleaf = true;
-              nextInternalNode->nextLeaf[i] = nextLeaf;
-              nextInternalNode->count[i] += 1;
-              nextInternalNode->head = tmpInternalNode;
-              leafIndex = 0;
-              insertComplete = true;
-              break;
-            }
-          }
-
-        } else {
+          // to get hold of the last available block
           for (int i = M - 1; i >= 0; i--) {
-            if (nextInternalNode->count[i] != 0) {
-              tmpInternalNode = nextInternalNode;
-              nextInternalNode = nextInternalNode->nextNode[i];
-              // leafIndex += nextInternalNode->count[i];
-              break;
-            }
+              if (root->count[i] != 0) {
+                  temp = root->nextNode[i];
+                  break;
+              }
           }
-        }
-      }
 
-    }
+
+          uint32_t leafIndex = 0;
+          bool insertComplete = false;
+
+
+          internalNode* tmpInternalNode = new internalNode();
+
+          while (!insertComplete) {
+              if (temp->pointLeaf == true) {
+                  // leafIndex = nextInternalNode->coun
+                  for (int i = 0; i < M; i++) 
+                  {
+                      if (temp->count[i] < M) {
+                          leafIndex = temp->count[i];
+                          temp->nextLeaf[i]->lines[leafIndex] = line;
+                          temp->nextLeaf[i]->isleaf = true;
+                          temp->count[i] += 1;
+                          leafIndex = 0;
+                          insertComplete = true;
+                          break;
+                      }
+                  }
+
+              } else {
+                  for (int i = M - 1; i >= 0; i--) {
+                      if (temp->count[i] != 0) {
+                          temp = temp->nextNode[i];
+                          break;
+                      }
+                  }
+              }
+          }
+
+      }
   }
 };
 
 int main() {
-  Chain c;
-  string str = "Hello, World!";
-  string other = "Welcome aboard:";
-  string another = "Lets go to LaLaLand.";
-  string yetanother = "Lets go to LaLaLand, again";
+    Chain c;
+    string str = "Hello, World!";
+    string other = "Welcome aboard:";
+    string another = "Lets go to LaLaLand.";
+    string yetanother = "Lets go to LaLaLand, again";
 
-  c.insertEnd(str);
-  c.insertEnd(other);
-  return 0;
+    c.insertEnd(str);
+    c.insertEnd(other);
+    return 0;
 }
