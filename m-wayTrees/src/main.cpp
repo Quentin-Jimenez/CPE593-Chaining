@@ -65,44 +65,38 @@ class Chain {
       inode->count[0] += 1;
       root = temp;
     } else {
-
-      internalNode * nextInternalNode = new internalNode();
+      internalNode* nextInternalNode = new internalNode();
       // to get hold of the last available block
       for (int i = M - 1; i >= 0; i--) {
-          if(root->count[i] != 0)
-          {
-              nextInternalNode = root->nextNode[i];
-              break;
-          }
+        if (root->count[i] != 0) {
+          nextInternalNode = root->nextNode[i];
+          break;
+        }
       }
 
-      leafNode * nextLeaf = new leafNode();
+      leafNode* nextLeaf = new leafNode();
       uint32_t leafIndex;
-      
-      while(1)
-      {
-          if(nextInternalNode->pointLeaf == true)
-          {
-              for(int i = 0; i < M; i++)
-              {
-                  if(nextInternalNode->count[i] < 4)
-                  {
-                    nextLeaf->lines[leafIndex] = line;
-                    nextLeaf->isleaf= true;
-                    break;
-                  }
-              }
+
+      while (1) {
+        if (nextInternalNode->pointLeaf == true) {
+          // leafIndex = nextInternalNode->coun
+          for (int i = 0; i < M; i++) {
+            if (nextInternalNode->count[i] < M) {
+              leafIndex = nextInternalNode->count[i];
+              nextLeaf->lines[i] = line;
+              nextLeaf->isleaf = true;
+              break;
+            }
           }
-          else 
-          {
-              for (int i = M - 1; i >= 0; i--) {
-                  if(nextInternalNode->count[i] != 0)
-                  {
-                      nextInternalNode = nextInternalNode->nextNode[i];
-                      break;
-                  }
-              }
+        } else {
+          for (int i = M - 1; i >= 0; i--) {
+            if (nextInternalNode->count[i] != 0) {
+              nextInternalNode = nextInternalNode->nextNode[i];
+              leafIndex += nextInternalNode->count[i];
+              break;
+            }
           }
+        }
       }
     }
   }
@@ -116,5 +110,6 @@ int main() {
   string yetanother = "Lets go to LaLaLand, again";
 
   c.insertEnd(str);
+  c.insertEnd(other);
   return 0;
 }
