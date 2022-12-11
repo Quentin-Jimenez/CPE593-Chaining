@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <string.h>
 
 #include <algorithm>
@@ -64,12 +65,43 @@ class Chain {
       inode->count[0] += 1;
       root = temp;
     } else {
+
+      internalNode * nextInternalNode = new internalNode();
       // to get hold of the last available block
       for (int i = M - 1; i >= 0; i--) {
-        while (root->nextNode[i] != nullptr)
-          if (root->count[i] < M) {
-            for (int j = 0; j < M; j++) {
-            }
+          if(root->count[i] != 0)
+          {
+              nextInternalNode = root->nextNode[i];
+              break;
+          }
+      }
+
+      leafNode * nextLeaf = new leafNode();
+      uint32_t leafIndex;
+      
+      while(1)
+      {
+          if(nextInternalNode->pointLeaf == true)
+          {
+              for(int i = 0; i < M; i++)
+              {
+                  if(nextInternalNode->count[i] < 4)
+                  {
+                    nextLeaf->lines[leafIndex] = line;
+                    nextLeaf->isleaf= true;
+                    break;
+                  }
+              }
+          }
+          else 
+          {
+              for (int i = M - 1; i >= 0; i--) {
+                  if(nextInternalNode->count[i] != 0)
+                  {
+                      nextInternalNode = nextInternalNode->nextNode[i];
+                      break;
+                  }
+              }
           }
       }
     }
