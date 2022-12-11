@@ -33,6 +33,12 @@ class Chain
     ~Chain() {};                //Destructor
 
     
+    void printTree()
+    {
+        cout << root->nextLeaf[0]->count << endl;
+        cout << root->nextLeaf[0]->lines[0];
+    }
+    
     // Inserts a value in the m-Way tree
     void insertEnd(string line)
     {
@@ -40,10 +46,6 @@ class Chain
         InternalNode *child, *n;
         int flag;
 
-        // Function setval() is called which
-        // returns a value 0 if the new value
-        // is inserted in the tree, otherwise
-        // it returns a value 1
         setval(line, root, &i, &child);
     }
 
@@ -54,8 +56,14 @@ class Chain
 
         // if node is null
         if (node == NULL) {
-            *p = line;
-            *child = NULL;
+            InternalNode *newRoot = new InternalNode();
+            LeafNode *leafNode = new LeafNode();
+            leafNode->lines[0] = line;
+            leafNode->count = 1;
+            newRoot->isLeafNode = true;
+            newRoot->count[0] = 1;
+            newRoot->nextLeaf[0] = leafNode;
+            root = newRoot;
             return;
         }
         else {
@@ -70,6 +78,7 @@ class Chain
                     if(node->count[index] < M)
                     {
                         fillnode(line, node->nextLeaf[index]);
+                        node->count[index] += 1;
                         return;
                     }
                 }
@@ -102,7 +111,9 @@ class Chain
 
         // Update counter to add a leaf and insert line
         int leafIndex = node->count;
+        cout << "Leeaf index " << leafIndex << endl;
         node->lines[leafIndex] = line;
+        cout << node->lines[leafIndex] << endl;
         node->count += 1;
     }
 
@@ -146,6 +157,8 @@ int main() {
     c.insertEnd(yetanother);
     c.insertEnd(str);
     c.insertEnd(another);
+
+    c.printTree();
     return 0;
 }
 
