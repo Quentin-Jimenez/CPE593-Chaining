@@ -15,6 +15,7 @@ class Chain {
     friend class Chain;
   };
   class internalNode {
+    internalNode *head;
     leafNode* nextLeaf[M];
     internalNode* nextNode[M];
     uint32_t count[M] = {0};
@@ -22,12 +23,13 @@ class Chain {
     // int flag;
     friend class Chain;
   };
-  class rootNode {
+  /*class rootNode {
     internalNode* nextNode[M];
     uint32_t count[M] = {0};
     friend class Chain;
   };
-  rootNode* root;
+  */
+  internalNode* root;
   // leafNode
 
  public:
@@ -49,10 +51,29 @@ class Chain {
     }
   }
 
+  void showTree()
+  {
+
+
+  }
+
+  void insertNonFull(string line)
+  {
+  }
+
+  void splitChild()
+  {
+  }
+
+  void traverse()
+  {
+  }
+
+
   void insertEnd(string line) {
     // internalNode* temp = new internalNode;
     if (root == nullptr) {
-      rootNode* temp = new rootNode();
+      internalNode* temp = new internalNode();
       internalNode* inode = new internalNode();
       leafNode* leaf = new leafNode();
       setLeaf(line, 0, leaf);
@@ -65,7 +86,9 @@ class Chain {
       inode->count[0] += 1;
       root = temp;
     } else {
+     
       internalNode* nextInternalNode = new internalNode();
+      nextInternalNode->head = root;
       // to get hold of the last available block
       for (int i = M - 1; i >= 0; i--) {
         if (root->count[i] != 0) {
@@ -75,19 +98,25 @@ class Chain {
       }
 
       leafNode* nextLeaf = new leafNode();
+      
       uint32_t leafIndex = 0;
       bool insertComplete = false;
+
+      
+      internalNode* tmpInternalNode = new internalNode();
 
       while (!insertComplete) {
         if (nextInternalNode->pointLeaf == true) {
           // leafIndex = nextInternalNode->coun
-          for (int i = 0; i < M; i++) {
+          for (int i = 0; i < M; i++) 
+          {
             if (nextInternalNode->count[i] < M) {
               leafIndex = nextInternalNode->count[i];
               nextLeaf->lines[leafIndex] = line;
               nextLeaf->isleaf = true;
               nextInternalNode->nextLeaf[i] = nextLeaf;
               nextInternalNode->count[i] += 1;
+              nextInternalNode->head = tmpInternalNode;
               leafIndex = 0;
               insertComplete = true;
               break;
@@ -97,6 +126,7 @@ class Chain {
         } else {
           for (int i = M - 1; i >= 0; i--) {
             if (nextInternalNode->count[i] != 0) {
+              tmpInternalNode = nextInternalNode;
               nextInternalNode = nextInternalNode->nextNode[i];
               // leafIndex += nextInternalNode->count[i];
               break;
@@ -104,6 +134,7 @@ class Chain {
           }
         }
       }
+
     }
   }
 };
