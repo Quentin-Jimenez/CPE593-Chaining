@@ -76,8 +76,9 @@ class Chain {
 
       leafNode* nextLeaf = new leafNode();
       uint32_t leafIndex = 0;
+      bool insertComplete = false;
 
-      while (1) {
+      while (!insertComplete) {
         if (nextInternalNode->pointLeaf == true) {
           // leafIndex = nextInternalNode->coun
           for (int i = 0; i < M; i++) {
@@ -85,8 +86,10 @@ class Chain {
               leafIndex = nextInternalNode->count[i];
               nextLeaf->lines[leafIndex] = line;
               nextLeaf->isleaf = true;
-              nextInternalNode->nextLeaf = nextLeaf;
+              nextInternalNode->nextLeaf[i] = nextLeaf;
+              nextInternalNode->count[i] += 1;
               leafIndex = 0;
+              insertComplete = true;
               break;
             }
           }
