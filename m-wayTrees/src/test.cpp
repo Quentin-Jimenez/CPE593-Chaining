@@ -101,7 +101,9 @@ class Chain
                         {
                             LeafNode *newLeaf = new LeafNode();
                             node->nextLeaf[index] = newLeaf;
+                            node->count[index] = 1;
                             fillnode(line, node->nextLeaf[index], true );
+                            return;
                         }
 
                         fillnode(line, node->nextLeaf[index], false);
@@ -144,11 +146,13 @@ class Chain
         }
         else
         {
-            leafIndex = node->count - 1;
+            leafIndex = node->count;
         }
+
+        cout << leafIndex << endl;
     
         node->lines[leafIndex] = line;
-        node->count += 1;
+        node->count +=1;
     }
 
     void deleteLeafNodes(InternalNode *node)
