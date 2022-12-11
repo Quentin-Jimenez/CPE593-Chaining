@@ -93,11 +93,9 @@ class Chain {
           for (int i = M - 1; i >= 0; i--) {
               if (root->count[i] != 0) {
                   temp = root->nextNode[i];
-                  nodeIndex = i;
                   break;
               }
           }
-
 
           uint32_t leafIndex = 0;
           bool insertComplete = false;
@@ -106,19 +104,20 @@ class Chain {
           while (!insertComplete) {
               if (temp->pointLeaf == true) {
                   // leafIndex = nextInternalNode->coun
-                  for (int i = 0; i < M; i++) 
+                  for(int k = 0; k < M; k++)
                   {
-                      leafIndex = temp->count[i];
-
-                      if (leafIndex < M) {
-                          leafNode* newLeaf = new leafNode();
-                          setLeaf(line, leafIndex , newLeaf);
-                          temp->nextLeaf[i] = newLeaf;
-                          temp->count[i] += 1;
-                          leafIndex = 0;
-                          insertComplete = true;
-                          leafsFull = false;
-                          break;
+                      for (int i = 0; i < M; i++) 
+                      {
+                          leafIndex = temp->count[i];
+                          if (leafIndex < M) {
+                              leafNode* newLeaf = new leafNode();
+                              setLeaf(line, leafIndex , newLeaf);
+                              temp->nextLeaf[k] = newLeaf;
+                              temp->count[k] += 1;
+                              leafIndex = 0;
+                              insertComplete = true;
+                              break;
+                          }
                       }
                   }
               } else {
@@ -130,7 +129,6 @@ class Chain {
                   }
               }
           }
-
       }
   }
 };
