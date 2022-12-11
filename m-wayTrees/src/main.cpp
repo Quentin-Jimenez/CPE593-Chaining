@@ -73,11 +73,12 @@ class Chain {
 
       internalNode* temp = new internalNode();
       if (root == nullptr) {
-          internalNode* inode = new internalNode();
+          internalNode *inode = new internalNode();
           leafNode* leaf = new leafNode();
           setLeaf(line, 0, leaf);
           // leaf->isleaf = true;
           // leaf->lines[0] = line;
+          
           temp->nextNode[0] = inode;
           inode->nextLeaf[0] = leaf;
           inode->pointLeaf = true;
@@ -86,10 +87,13 @@ class Chain {
           root = temp;
       } else {
 
+
           // to get hold of the last available block
+          int nodeIndex = 0;
           for (int i = M - 1; i >= 0; i--) {
               if (root->count[i] != 0) {
                   temp = root->nextNode[i];
+                  nodeIndex = i;
                   break;
               }
           }
@@ -97,26 +101,26 @@ class Chain {
 
           uint32_t leafIndex = 0;
           bool insertComplete = false;
-
-
-          internalNode* tmpInternalNode = new internalNode();
+          bool leafsFull = true;
 
           while (!insertComplete) {
               if (temp->pointLeaf == true) {
                   // leafIndex = nextInternalNode->coun
                   for (int i = 0; i < M; i++) 
                   {
-                      if (temp->count[i] < M) {
-                          leafIndex = temp->count[i];
-                          temp->nextLeaf[i]->lines[leafIndex] = line;
-                          temp->nextLeaf[i]->isleaf = true;
+                      leafIndex = temp->count[i];
+
+                      if (leafIndex < M) {
+                          leafNode* newLeaf = new leafNode();
+                          setLeaf(line, leafIndex , newLeaf);
+                          temp->nextLeaf[i] = newLeaf;
                           temp->count[i] += 1;
                           leafIndex = 0;
                           insertComplete = true;
+                          leafsFull = false;
                           break;
                       }
                   }
-
               } else {
                   for (int i = M - 1; i >= 0; i--) {
                       if (temp->count[i] != 0) {
@@ -140,5 +144,9 @@ int main() {
 
     c.insertEnd(str);
     c.insertEnd(other);
+    c.insertEnd(another);
+    c.insertEnd(yetanother);
+    c.insertEnd(str);
+    c.insertEnd(another);
     return 0;
 }
