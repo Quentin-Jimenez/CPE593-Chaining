@@ -191,38 +191,35 @@ class Chain {
         root->nextLeaf[(totallines-1)/M]->count--;
 
     }
-
-    head = tempHeadNode;
-    cout << endl;
-    cout << "Test" << head->nextNode[0]->nextLeaf[0]->lines[0] << endl;
-  }
 };
 
 
 
 int main() {
-  Chain c;
-  string str = "Hello, World!";
-  string other = "Welcome aboard:";
-  string another = "Lets go to LaLaLand.";
-  string yetanother = "Lets go to LaLaLand, again";
+    Chain c;
+    string str = "Hello, World!";
+    string other = "Welcome aboard:";
+    string another = "Lets go to LaLaLand.";
+    string yetanother = "Lets go to LaLaLand, again";
 
-  c.insertEnd(str);
-  c.insertEnd(other);
-  c.insertEnd(another);
-  c.insertEnd(yetanother);
-  c.insertEnd(str);
-  c.insertEnd(other);
-  c.insertEnd(another);
-  c.insertEnd(yetanother);
-  c.insertEnd(str);
-  c.insertEnd(other);
-  c.insertEnd(another);
-  c.insertEnd(yetanother);
-  c.insertEnd(str);
-  c.insertEnd(other);
-  c.insertEnd(another);
-  c.insertEnd(yetanother);
+    c.insertEnd(str);
+    c.insertEnd(other);
+    c.insertEnd(another);
+    c.insertEnd(yetanother);
+    c.insertEnd(str);
+    c.insertEnd(other);
+    c.insertEnd(another);
+    c.insertEnd(yetanother);
+    c.insertEnd(str);
+    c.insertEnd(other);
+    c.insertEnd(another);
+    c.insertEnd(yetanother);
+    c.insertEnd(str);
+    c.insertEnd(other);
+    c.insertEnd(another);
+    c.insertEnd(yetanother);
+
+  /*
     c.insertEnd("a01");
     c.insertEnd("b02");
     c.insertEnd("c03");
@@ -241,6 +238,7 @@ int main() {
     c.insertEnd("n14");
     c.insertEnd("o15");
     c.insertEnd("p16");
+    */
 
 
     //string thisNew = " Tryhing to split";
