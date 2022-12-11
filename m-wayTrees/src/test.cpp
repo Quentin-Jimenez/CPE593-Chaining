@@ -17,7 +17,7 @@ class Chain
 
     class InternalNode {
         bool isLeafNode;  // Is this node pointed to a leaf
-        int count[M];  // Tracks the number of leaves below 
+        int count[M] = { 0 };  // Tracks the number of leaves below 
 
         InternalNode *nextNode[M];
         LeafNode *nextLeaf[M];   // These are all null unless a leaf node
@@ -37,6 +37,12 @@ class Chain
     {
         cout << root->nextLeaf[0]->count << endl;
         cout << root->nextLeaf[0]->lines[0];
+        cout << root->nextLeaf[0]->lines[1];
+        cout << root->nextLeaf[0]->lines[2];
+        cout << root->nextLeaf[0]->lines[3];
+        cout << endl;
+        cout << root->nextLeaf[1]->lines[0];
+        cout << root->nextLeaf[1]->lines[1];
     }
     
     // Inserts a value in the m-Way tree
@@ -71,13 +77,19 @@ class Chain
             //Check if node points to leaf, if it doesn't recursively call and go to last possible node
             if(node->isLeafNode)
             {
-                
                 int isNodeFull = true;
                 for(int index = 0; index < M; index++)
                 {
                     if(node->count[index] < M)
                     {
-                        fillnode(line, node->nextLeaf[index]);
+                        if(node->nextLeaf[index] == nullptr)
+                        {
+                            LeafNode *newLeaf = new LeafNode();
+                            node->nextLeaf[index] = newLeaf;
+                            fillnode(line, node->nextLeaf[index], true );
+                        }
+
+                        fillnode(line, node->nextLeaf[index], false);
                         node->count[index] += 1;
                         return;
                     }
@@ -85,10 +97,10 @@ class Chain
 
                 if(isNodeFull)
                 {
+                    cout << "In split" << endl;
                     splitEnd(line, node);
                     return;
                 }
-                
             }
             else {
                 
@@ -106,14 +118,22 @@ class Chain
     }
 
     // Adjusts the value of the node
-    void fillnode(string line, LeafNode* node)
+    void fillnode(string line, LeafNode* node, bool isNewLeaf)
     {
 
         // Update counter to add a leaf and insert line
-        int leafIndex = node->count;
-        cout << "Leeaf index " << leafIndex << endl;
+        int leafIndex;
+        if(isNewLeaf)
+        {
+            leafIndex = 0;
+        }
+        else
+        {
+            leafIndex = node->count - 1;
+        }
+    
+        cout << "Imporant check " << leafIndex <<endl;
         node->lines[leafIndex] = line;
-        cout << node->lines[leafIndex] << endl;
         node->count += 1;
     }
 
@@ -129,7 +149,7 @@ class Chain
         //TODO hardcoded for M = 4. Will need to change this
         newNodeLeft = head;
 
-        fillnode(line, newLeaf);
+        fillnode(line, newLeaf, false);
         newNodeRight->nextLeaf[0] = newLeaf;
         newNodeRight->isLeafNode = true;
         newNodeRight->count[0] = 1;
@@ -151,12 +171,13 @@ int main() {
 
 
     c.insertEnd(str);
-    cout << "Here" << endl;
     c.insertEnd(other);
     c.insertEnd(another);
     c.insertEnd(yetanother);
+    
     c.insertEnd(str);
     c.insertEnd(another);
+
 
     c.printTree();
     return 0;
