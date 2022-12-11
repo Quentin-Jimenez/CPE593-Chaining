@@ -35,7 +35,6 @@ class Chain
     
     void printTree()
     {
-        cout << root->nextLeaf[0]->count << endl;
         cout << root->nextLeaf[0]->lines[0];
         cout << root->nextLeaf[0]->lines[1];
         cout << root->nextLeaf[0]->lines[2];
@@ -43,6 +42,22 @@ class Chain
         cout << endl;
         cout << root->nextLeaf[1]->lines[0];
         cout << root->nextLeaf[1]->lines[1];
+        cout << root->nextLeaf[1]->lines[2];
+        cout << root->nextLeaf[1]->lines[3];
+        cout << endl;
+        cout << root->nextLeaf[2]->lines[0];
+        cout << root->nextLeaf[2]->lines[1];
+        cout << root->nextLeaf[2]->lines[2];
+        cout << root->nextLeaf[2]->lines[3];
+        cout << endl;
+        cout << root->nextLeaf[3]->lines[0];
+        cout << root->nextLeaf[3]->lines[1];
+        cout << root->nextLeaf[3]->lines[2];
+        cout << root->nextLeaf[3]->lines[3];
+        cout << endl;
+
+        //cout << root->nextNode[0]->nextLeaf[0]->lines[0];
+
     }
     
     // Inserts a value in the m-Way tree
@@ -132,11 +147,18 @@ class Chain
             leafIndex = node->count - 1;
         }
     
-        cout << "Imporant check " << leafIndex <<endl;
         node->lines[leafIndex] = line;
         node->count += 1;
     }
 
+    void deleteLeafNodes(InternalNode *node)
+    {
+        for(int i = 0; i < M; i++)
+        {
+            delete [] node->nextLeaf[i];
+        }
+    }
+        
     // Splits the node
     void splitEnd(string line, InternalNode *head)
     {
@@ -149,7 +171,7 @@ class Chain
         //TODO hardcoded for M = 4. Will need to change this
         newNodeLeft = head;
 
-        fillnode(line, newLeaf, false);
+        fillnode(line, newLeaf, true);
         newNodeRight->nextLeaf[0] = newLeaf;
         newNodeRight->isLeafNode = true;
         newNodeRight->count[0] = 1;
@@ -158,8 +180,13 @@ class Chain
         tempHeadNode->nextNode[0] = newNodeLeft;
         tempHeadNode->nextNode[1] = newNodeRight;
 
+        deleteLeafNodes(tempHeadNode);
+
         head = tempHeadNode;
+        cout << endl;
+        cout << "Test" << head->nextNode[0]->nextLeaf[0]->lines[0] << endl;
     }
+
 };
 
 int main() {
@@ -174,10 +201,22 @@ int main() {
     c.insertEnd(other);
     c.insertEnd(another);
     c.insertEnd(yetanother);
-    
     c.insertEnd(str);
     c.insertEnd(another);
+    c.insertEnd(str);
+    c.insertEnd(other);
+    c.insertEnd(another);
+    c.insertEnd(yetanother);
+    c.insertEnd(another);
+    c.insertEnd(yetanother);
+    c.insertEnd(str);
+    c.insertEnd(other);
+    c.insertEnd(another);
+    c.insertEnd(yetanother);
 
+
+    //string thisNew = " Tryhing to split";
+    //c.insertEnd(thisNew);
 
     c.printTree();
     return 0;
