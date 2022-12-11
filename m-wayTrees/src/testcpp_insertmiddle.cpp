@@ -72,6 +72,13 @@ class Chain {
       currLeaf = currNode->nextLeaf[currNodeIndex];
     }
     int currLeafIndex = (pos % M) - 1;  // to adjust 0 index
+    // Shift everything one place to the right
+    // assuming last leafnode is empty
+    for (int j = M - 2; j >= currLeafIndex; j--) {
+      if (currLeaf->lines[j] != "") {
+        currLeaf->lines[j + 1] = currLeaf->lines[j];
+      }
+    }
     currLeaf->lines[currLeafIndex] = line;
     currLeaf->count += 1;
   }
@@ -202,7 +209,8 @@ int main() {
   c.insertEnd(str);
   c.insertEnd(another);
 
-  c.insertMiddle(other, 5);
+  c.insertMiddle("Hey", 5);
+  c.insertMiddle("there", 5);
   // c.insertEnd(other);
   // c.insertEnd(yetanother);
   // c.insertEnd(str);
