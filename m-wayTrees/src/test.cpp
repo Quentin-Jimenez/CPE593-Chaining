@@ -33,28 +33,18 @@ class Chain {
   ~Chain(){};                 // Destructor
 
   void printTree() {
-    cout << root->nextLeaf[0]->lines[0];
-    cout << root->nextLeaf[0]->lines[1];
-    cout << root->nextLeaf[0]->lines[2];
-    cout << root->nextLeaf[0]->lines[3];
-    cout << endl;
-    cout << root->nextLeaf[1]->lines[0];
-    cout << root->nextLeaf[1]->lines[1];
-    cout << root->nextLeaf[1]->lines[2];
-    cout << root->nextLeaf[1]->lines[3];
-    cout << endl;
-    cout << root->nextLeaf[2]->lines[0];
-    cout << root->nextLeaf[2]->lines[1];
-    cout << root->nextLeaf[2]->lines[2];
-    cout << root->nextLeaf[2]->lines[3];
-    cout << endl;
-    cout << root->nextLeaf[3]->lines[0];
-    cout << root->nextLeaf[3]->lines[1];
-    cout << root->nextLeaf[3]->lines[2];
-    cout << root->nextLeaf[3]->lines[3];
-    cout << endl;
 
-    // cout << root->nextNode[0]->nextLeaf[0]->lines[0];
+    int totallines = 0;
+    for(int i=0; i < M; i++){
+        totallines += root->count[i];
+    }
+
+    for(int i = 0; i < totallines; i++){
+        if(i%M == 0)
+            cout << endl << i/M << " : ";
+        cout << root->nextLeaf[i/M]->lines[i%M] << " ";
+    }
+    cout << endl << endl;
   }
 
   // Inserts a value in the m-Way tree
@@ -130,7 +120,7 @@ class Chain {
       leafIndex = node->count;
     }
 
-    cout << leafIndex << endl;
+    //cout << leafIndex << endl;
 
     node->lines[leafIndex] = line;
     node->count += 1;
@@ -181,7 +171,6 @@ class Chain {
         // Update position of other lines
         string hold = "";
         for(int i = pos; i < totallines; i++){
-            cout << (i-1)/M << " " << (i-1)%M << endl;
             root->nextLeaf[(i-1)/M]->lines[(i-1)%M] = root->nextLeaf[i/M]->lines[i%M];
         }
 
@@ -201,7 +190,7 @@ int main() {
     string other = "Welcome aboard:";
     string another = "Lets go to LaLaLand.";
     string yetanother = "Lets go to LaLaLand, again";
-
+    /*
     c.insertEnd(str);
     c.insertEnd(other);
     c.insertEnd(another);
@@ -219,31 +208,34 @@ int main() {
     c.insertEnd(another);
     c.insertEnd(yetanother);
 
-  /*
-    c.insertEnd("a01");
-    c.insertEnd("b02");
-    c.insertEnd("c03");
-    //c.printTree();
-    c.insertEnd("d04");
-    c.insertEnd("e05");
-    c.insertEnd("f06");
-    c.insertEnd("g07");
-    c.remove(3);
-    c.insertEnd("h08");
-    c.insertEnd("i09");
-    c.insertEnd("j10");
-    c.insertEnd("k11");
-    c.insertEnd("l12");
-    c.insertEnd("m13");
-    c.insertEnd("n14");
-    c.insertEnd("o15");
-    c.insertEnd("p16");
     */
+    c.insertEnd("a00");
+    c.insertEnd("b01");
+    c.insertEnd("c02");
+    c.insertEnd("d03");
+    c.insertEnd("e04");
+    c.insertEnd("f05");
+    c.insertEnd("g06");
+    c.insertEnd("h07");
+    c.insertEnd("i08");
+    c.insertEnd("j09");
+    c.insertEnd("k10");
+    c.insertEnd("l11");
+    c.insertEnd("m12");
+    c.insertEnd("n13");
+    c.insertEnd("o14");
+    c.insertEnd("p15");
+
+    c.printTree();
+    c.remove(5);
+    c.remove(4);
+    c.remove(3);
+    cout << "Removing positions 3-5 from chain" << endl;
+    c.printTree();
 
 
     //string thisNew = " Tryhing to split";
     //c.insertEnd(thisNew);
 
-  c.printTree();
   return 0;
 }
