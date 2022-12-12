@@ -33,7 +33,7 @@ class Chain {
   ~Chain(){};                 // Destructor
 
   void printTree() {
-    cout << root->nextLeaf[0]->lines[0];
+    /*cout << root->nextLeaf[0]->lines[0];
     cout << root->nextLeaf[0]->lines[1];
     cout << root->nextLeaf[0]->lines[2];
     cout << root->nextLeaf[0]->lines[3];
@@ -53,8 +53,42 @@ class Chain {
     cout << root->nextLeaf[3]->lines[2];
     cout << root->nextLeaf[3]->lines[3];
     cout << endl;
+    */
 
+
+     cout << "Node 1" << endl;
+     cout << "Leaf 1" << endl;
+     cout << root->nextNode[0]->nextLeaf[0]->lines[0];
+     cout << root->nextNode[0]->nextLeaf[0]->lines[1];
+     cout << root->nextNode[0]->nextLeaf[0]->lines[2];
+     cout << root->nextNode[0]->nextLeaf[0]->lines[3];
+
+     cout << endl;
+     cout << "Leaf2" << endl;
+     cout << root->nextNode[0]->nextLeaf[1]->lines[0];
+     cout << root->nextNode[0]->nextLeaf[1]->lines[1];
+     cout << root->nextNode[0]->nextLeaf[1]->lines[2];
+     cout << root->nextNode[0]->nextLeaf[1]->lines[3];
+
+     cout << endl;
+     cout << "leaf 3" << endl;
+     cout << root->nextNode[0]->nextLeaf[2]->lines[0];
+     cout << root->nextNode[0]->nextLeaf[2]->lines[1];
+     cout << root->nextNode[0]->nextLeaf[2]->lines[2];
+     cout << root->nextNode[0]->nextLeaf[2]->lines[3];
+     cout << endl;
+     cout << "Leaf 4" << endl;
+
+     cout << root->nextNode[0]->nextLeaf[3]->lines[0];
+     cout << root->nextNode[0]->nextLeaf[3]->lines[1];
+     cout << root->nextNode[0]->nextLeaf[3]->lines[2];
+     cout << root->nextNode[0]->nextLeaf[3]->lines[3];
+
+     cout <<endl;
+     cout << "Node 2" << endl;
+     cout << "Leaf 1" << endl;
      cout << root->nextNode[1]->nextLeaf[0]->lines[0];
+
   }
 
  
@@ -179,6 +213,8 @@ class Chain {
                 prevNode = &root;
             }
 
+            InternalNode *tempNode = new InternalNode();
+
             if(node->isLeafNode)
             {
                 int isNodeFull = true;
@@ -204,7 +240,7 @@ class Chain {
                 if(isNodeFull)
                 {
                     splitEnd(line, &node);
-                    prevNode = &node;
+                    *prevNode = node;
                     
                     cout << "here"  << endl;
                     cout << node->nextNode[1]->nextLeaf[0]->lines[0];
@@ -235,24 +271,29 @@ class Chain {
     void splitEnd(string line, InternalNode **head)
     {
         
-        InternalNode *newNodeLeft = new InternalNode();
-        InternalNode *newNodeRight = new InternalNode();
+        InternalNode *newNodeOne = new InternalNode();
+        InternalNode *newNodeTwo = new InternalNode();
+        InternalNode *newNodeThree = new InternalNode();
+        InternalNode *newNodeFour = new InternalNode();
+
+            
         InternalNode *tempHeadNode = new InternalNode();
         LeafNode *newLeaf = new LeafNode();
     
         //TODO hardcoded for M = 4. Will need to change this
-        newNodeLeft = *head;
+        newNodeOne = *head;
 
         fillnode(line, newLeaf, true);
-        newNodeRight->nextLeaf[0] = newLeaf;
-        newNodeRight->isLeafNode = true;
-        newNodeRight->count[0] = 1;
+        newNodeTwo->nextLeaf[0] = newLeaf;
+        newNodeTwo->isLeafNode = true;
+        newNodeTwo->count[0] = 1;
 
         tempHeadNode->isLeafNode = false;
-        tempHeadNode->nextNode[0] = newNodeLeft;
-        tempHeadNode->nextNode[1] = newNodeRight;
-
-
+        tempHeadNode->nextNode[0] = newNodeOne;
+        tempHeadNode->nextNode[1] = newNodeTwo;
+        tempHeadNode->nextNode[2] = newNodeThree;
+        tempHeadNode->nextNode[3] = newNodeFour;
+ 
         *head = tempHeadNode;
 
     }
