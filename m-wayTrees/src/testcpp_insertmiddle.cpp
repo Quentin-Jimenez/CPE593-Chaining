@@ -55,6 +55,21 @@ class Chain {
 
     // cout << root->nextNode[0]->nextLeaf[0]->lines[0];
   }
+  // Split internal node to M internal nodes
+  void splitNode(InternalNode *node) {
+    InternalNode *temp = new InternalNode();
+    InternalNode *newNode;
+    temp->isLeafNode = false;
+    if (node->isLeafNode == true) {
+      for (int i = 0; i < M; i++) {
+        newNode = new InternalNode();
+        temp->nextNode[i] = newNode;
+      }
+    }
+    // Copy lines and update counts
+    temp->nextNode[0] = node;
+    node = temp;
+  }
   void insertMiddle(string line, int pos) {
     InternalNode *currNode = root;
     LeafNode *currLeaf;
@@ -162,6 +177,11 @@ class Chain {
     node->count += 1;
   }
 
+  void testSplit() {
+    InternalNode *currNode = root;
+    splitNode(root);
+  }
+
   void deleteLeafNodes(InternalNode *node) {
     for (int i = 0; i < M; i++) {
       delete[] node->nextLeaf[i];
@@ -211,6 +231,7 @@ int main() {
 
   c.insertMiddle("Hey", 5);
   c.insertMiddle("there", 5);
+  c.testSplit();
   // c.insertEnd(other);
   // c.insertEnd(yetanother);
   // c.insertEnd(str);
