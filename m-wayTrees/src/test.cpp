@@ -19,6 +19,7 @@ class Chain {
   class InternalNode {
     bool isLeafNode;     // Is this node pointed to a leaf
     int count[M] = {0};  // Tracks the number of leaves below
+    int nodeIndexFlag;   // Keep track this nodes index--> for backtrace
 
     InternalNode *nextNode[M];
     InternalNode *parentNode;   //keeps track of previous node, used to update count
@@ -35,11 +36,15 @@ class Chain {
 
   void printTree() {
 
+      cout << "In print" << endl;
       for(int q = 0; q < M; q++)
+      {
         cout << root->count[q] << endl;
-
-      cout << "Leaf Count" << root->nextNode[1]->count[0] << endl;
-      cout << "Leaf Count" << root->nextNode[1]->count[1] << endl;
+        for(int i = 0; i < M; i++)
+        {
+            cout << "Leaf Count" << root->nextNode[q]->count[i] << endl;
+        }
+      }
 
       
       for(int k = 0; k < M; k++)
@@ -59,14 +64,16 @@ class Chain {
           cout << endl;
       }
       
+      
 
       cout << endl;
   }
 
-  InternalNode * countBacktrace(InternalNode * node, int index)
+  InternalNode * countBacktrace(InternalNode * node)
   {
       int newCount = 0; 
-      int firstBack = true;
+      int oldCount = 0;
+      int parentIndex = 0;
 
       while(1)
       {
@@ -75,54 +82,68 @@ class Chain {
               break;
           }
 
-          
+            
+          parentIndex = node->nodeIndexFlag;
+
           if(node->isLeafNode)
           {
               for(int i = 0; i < M; i++)
               {
                   if(node->nextLeaf[i] != nullptr)
-                  {
                       newCount += node->nextLeaf[i]->count;
+              }
+
+              node = node->parentNode;
+
+              for(int i = parentIndex; i < M; i++)
+              {
+                  if(i == 0)
+                  {
+                      node->count[0] = newCount;
+                  }
+                  else
+                  {
+                      node->count[i] = newCount + node->count[i-1];
+                  }
+                  
+                  if(node->count[i + 1] == 0)
+                  {
+                      break;
                   }
               }
           }
           else
           {
-              if(firstBack != true)
-              {
-                index = 3;
-              }
-              else
-              {
-                  firstBack = false;
-              }
+              oldCount = node->count[parentIndex];
 
-              for(int i = 0; i < M; i++)
+              node = node->parentNode;
+
+              for(int i = parentIndex; i < M; i++)
               {
                   newCount += node->count[i];
               }
-          }
 
-          node = node->parentNode;
-          for(int j = index; j < M; j++)
-          {
-              cout << " J " << j << endl;
-              // Update the entire count array
-              if( j == 0)
+              // In the case of a non leaf node --> we need to get the difference
+              newCount = newCount - oldCount;
+
+              for(int i = parentIndex; i < M; i++)
               {
-                  node->count[j] = newCount;
-                  break;
-              }
+                  if(i == 0)
+                  {
+                      node->count[0] = node->count[0] + newCount;
+                  }
+                  else
+                  {
+                      node->count[i] = newCount + node->count[i-1];
+                  }
 
-              // Count[i] equals how many lines are in the node plus the previous nodes count
-              node->count[j] = newCount + node->count[j-1];
-
-              // Only need to update the next few nodes if they are not zero
-              if( j != 3 && node->count[j+1] == 0)
-              {
-                  break;
+                  if(node->count[i + 1] == 0)
+                  {
+                      break;
+                  }
               }
           }
+          
           newCount = 0;
       }
 
@@ -170,6 +191,7 @@ class Chain {
           newRoot->isLeafNode = true;
           newRoot->count[0] = 1;
           newRoot->parentNode = nullptr;
+          newRoot->nodeIndexFlag = 0;
           newRoot->nextLeaf[0] = leafNode;
           root = newRoot;
       }
@@ -191,19 +213,18 @@ class Chain {
                   if(node->count[index] < M)
                   {
 
-                      cout << "Previous index" << prevIndex <<endl;
                       if(node->nextLeaf[index] == nullptr)
                       {
                           LeafNode *newLeaf = new LeafNode();
                           newLeaf = fillnode(line, newLeaf, true );
                           node->nextLeaf[index] = newLeaf;
                           node->count[index] = 1;
-                          countBacktrace(node, prevIndex);
+                          countBacktrace(node);
                           return;
                       }
 
                       node->nextLeaf[index] = fillnode(line, node->nextLeaf[index], false);
-                      countBacktrace(node, prevIndex);
+                      countBacktrace(node);
 
                       node->count[index] += 1;
 
@@ -214,8 +235,8 @@ class Chain {
               if(isNodeFull)
               {
                   splitEnd(line, &node);
-                  countBacktrace(node->nextNode[0], 0);
-                  countBacktrace(node->nextNode[1], 1);
+                  countBacktrace(node->nextNode[0]);
+                  countBacktrace(node->nextNode[1]);
                   *prevNode = node;
 
                   return;
@@ -229,11 +250,10 @@ class Chain {
               for(int nodeIndex = 0; nodeIndex < M;  nodeIndex++)
               {
                   // Check for the last node that is populated and go to that node
-                  cout << "Node count check " << node->count[nodeIndex] << endl;
+                  // cout << "Node count check " << node->count[nodeIndex] << endl;
                   if(node->count[nodeIndex] % 16 > 0 || node->count[nodeIndex] == 0)
                   {
-                      //TODO may need to pass index to this
-                      cout << "Index is " << nodeIndex<< endl; 
+                      //cout << "Index is " << nodeIndex<< endl; 
                       setval(line, node->nextNode[nodeIndex], prevNode, isPrevSet, nodeIndex);
                       return;
                   }
@@ -265,17 +285,22 @@ class Chain {
       //TODO hardcoded for M = 4. Will need to change this
       newNodeOne = *head;
       newNodeOne->isLeafNode = true;
+      newNodeOne->nodeIndexFlag = 0;
 
       fillnode(line, newLeaf, true);
       newNodeTwo->nextLeaf[0] = newLeaf;
       newNodeTwo->isLeafNode = true;
       newNodeTwo->count[0] = 1;
       newNodeTwo->parentNode = tempHeadNode;
+      newNodeTwo->nodeIndexFlag = 1;
 
       newNodeThree->isLeafNode = true;
       newNodeThree->parentNode = tempHeadNode;
+      newNodeThree->nodeIndexFlag = 2;
+      
       newNodeFour->isLeafNode = true;
       newNodeFour->parentNode = tempHeadNode;
+      newNodeFour->nodeIndexFlag = 3;
 
       tempHeadNode->isLeafNode = false;
       tempHeadNode->nextNode[0] = newNodeOne;
@@ -320,7 +345,6 @@ int main() {
     string extrastring = "Please work";
     c.insertEnd(extrastring);
     c.insertEnd(str);
-
     
     for(int i = 0; i < 43; i++)
     {
@@ -328,6 +352,9 @@ int main() {
     }
     c.insertEnd(another);
     c.insertEnd(yetanother);
+    
+    string hugeTest = "Add 65th line woop woop";
+    c.insertEnd(hugeTest);
     
     c.printTree();
     return 0;
