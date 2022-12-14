@@ -63,8 +63,9 @@ class Chain {
           }
           cout << endl;
       }
-      
-      
+      cout << root->nextNode[3]->isLeafNode << " " << root->nextNode[3]->count[1] << endl;
+
+      cout << root->nextNode[3]->nextNode[0]->nextLeaf[0]->lines[0];
 
       cout << endl;
   }
@@ -146,7 +147,6 @@ class Chain {
           
           newCount = 0;
       }
-
       return node;
   }
  
@@ -175,11 +175,12 @@ class Chain {
   // Inserts a value in the m-Way tree
   void insertEnd(string line)
   {
-      setval(line, root, nullptr, false, 0);
+      root = setval(line, this->root);
+      //cout << "Testing" << this->root->nextNode[3]->nextNode[0]->nextLeaf[0]->lines[0] << endl;
   }
 
   // Sets the value in the node
-  void setval(string line, InternalNode *node, InternalNode **prevNode, bool isPrevSet, int prevIndex) 
+  InternalNode * setval(string line, InternalNode *node)
   {
 
       // if node is null
@@ -193,17 +194,12 @@ class Chain {
           newRoot->parentNode = nullptr;
           newRoot->nodeIndexFlag = 0;
           newRoot->nextLeaf[0] = leafNode;
-          root = newRoot;
+          node = newRoot;
+          return node;
       }
       else {
 
           //Check if node points to leaf, if it doesn't recursively call and go to last possible node
-
-          if(!isPrevSet)
-          {
-              prevNode = &root;
-              isPrevSet = true;
-          }
 
           if(node->isLeafNode)
           {
@@ -220,7 +216,7 @@ class Chain {
                           node->nextLeaf[index] = newLeaf;
                           node->count[index] = 1;
                           countBacktrace(node);
-                          return;
+                          return node;
                       }
 
                       node->nextLeaf[index] = fillnode(line, node->nextLeaf[index], false);
@@ -228,24 +224,22 @@ class Chain {
 
                       node->count[index] += 1;
 
-                      return;
+                      return node;
                   }
               }
 
               if(isNodeFull)
               {
                   splitEnd(line, &node);
+                  cout << node->nextNode[1]->nextLeaf[0]->lines[0] << endl;
                   countBacktrace(node->nextNode[0]);
                   countBacktrace(node->nextNode[1]);
-                  *prevNode = node;
+                  cout << node->nextNode[1]->nextLeaf[0]->lines[0] << endl;
 
-                  return;
+                  return node;
               }
           }
           else {
-
-              // keep track of last node
-              *prevNode = node;
 
               for(int nodeIndex = 0; nodeIndex < M;  nodeIndex++)
               {
@@ -254,30 +248,33 @@ class Chain {
                   if(node->count[nodeIndex] % 16 > 0 || node->count[nodeIndex] == 0)
                   {
                       //cout << "Index is " << nodeIndex<< endl; 
-                      setval(line, node->nextNode[nodeIndex], prevNode, isPrevSet, nodeIndex);
-                      return;
+                      setval(line, node->nextNode[nodeIndex]);
+                      return node;
                   }
               }
 
               // Only reaches this point if all nodes are full. We then go down to next level from the last node
               // This only works for insert end
-              setval(line, node->nextNode[3], prevNode, isPrevSet, 3);
-              return;
+              setval(line, node->nextNode[3]);
+              return node;
 
           }
       }
+      return node;  // Doesnt hit here but throws error
   }
 
 
   // Splits the node
   void splitEnd(string line, InternalNode **head)
   {
+      cout << "In split" << endl;
+      cout << line << endl;
+    
 
       InternalNode *newNodeOne = new InternalNode();
       InternalNode *newNodeTwo = new InternalNode();
       InternalNode *newNodeThree = new InternalNode();
       InternalNode *newNodeFour = new InternalNode();
-
 
       InternalNode *tempHeadNode = new InternalNode();
       LeafNode *newLeaf = new LeafNode();
@@ -286,6 +283,7 @@ class Chain {
       newNodeOne = *head;
       newNodeOne->isLeafNode = true;
       newNodeOne->nodeIndexFlag = 0;
+      newNodeOne->parentNode = tempHeadNode;
 
       fillnode(line, newLeaf, true);
       newNodeTwo->nextLeaf[0] = newLeaf;
@@ -302,11 +300,12 @@ class Chain {
       newNodeFour->parentNode = tempHeadNode;
       newNodeFour->nodeIndexFlag = 3;
 
+      tempHeadNode->nodeIndexFlag = 3;
       tempHeadNode->isLeafNode = false;
-      tempHeadNode->nextNode[0] = newNodeOne;
       tempHeadNode->count[0] = 16;
-      tempHeadNode->nextNode[1] = newNodeTwo;
       tempHeadNode->count[1] = 1;
+      tempHeadNode->nextNode[0] = newNodeOne;
+      tempHeadNode->nextNode[1] = newNodeTwo;
       tempHeadNode->nextNode[2] = newNodeThree;
       tempHeadNode->nextNode[3] = newNodeFour;
 
@@ -357,5 +356,6 @@ int main() {
     c.insertEnd(hugeTest);
     
     c.printTree();
+    cout << "Finsihed printing" << endl;
     return 0;
 }
