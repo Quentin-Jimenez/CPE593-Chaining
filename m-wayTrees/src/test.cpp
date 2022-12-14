@@ -166,9 +166,9 @@ class Chain {
       return node;
   }
 
-  void deleteLeafNodes(InternalNode *node) {
+  void deleteLeafNodes(InternalNode **node) {
       for (int i = 0; i < M; i++) {
-          delete[] node->nextLeaf[i];
+          delete[] (*node)->nextLeaf[i];
       }
   }
 
@@ -230,6 +230,15 @@ class Chain {
 
               if(isNodeFull)
               {
+                  if(node->parentNode != nullptr)
+                  {
+                      
+                      cout << node->parentNode->count[0] << endl;
+                      cout << node->parentNode->count[1] << endl;
+                      cout << node->parentNode->count[2] << endl;
+                      cout << node->parentNode->count[3] << endl;
+
+                  }
                   splitEnd(line, &node);
                   cout << node->nextNode[1]->nextLeaf[0]->lines[0] << endl;
                   countBacktrace(node->nextNode[0]);
@@ -247,7 +256,7 @@ class Chain {
                   // cout << "Node count check " << node->count[nodeIndex] << endl;
                   if(node->count[nodeIndex] % 16 > 0 || node->count[nodeIndex] == 0)
                   {
-                      //cout << "Index is " << nodeIndex<< endl; 
+                      cout << "Index is " << nodeIndex<< endl; 
                       setval(line, node->nextNode[nodeIndex]);
                       return node;
                   }
@@ -283,21 +292,17 @@ class Chain {
       newNodeOne = *head;
       newNodeOne->isLeafNode = true;
       newNodeOne->nodeIndexFlag = 0;
-      newNodeOne->parentNode = tempHeadNode;
 
       fillnode(line, newLeaf, true);
       newNodeTwo->nextLeaf[0] = newLeaf;
       newNodeTwo->isLeafNode = true;
       newNodeTwo->count[0] = 1;
-      newNodeTwo->parentNode = tempHeadNode;
       newNodeTwo->nodeIndexFlag = 1;
 
       newNodeThree->isLeafNode = true;
-      newNodeThree->parentNode = tempHeadNode;
       newNodeThree->nodeIndexFlag = 2;
       
       newNodeFour->isLeafNode = true;
-      newNodeFour->parentNode = tempHeadNode;
       newNodeFour->nodeIndexFlag = 3;
 
       tempHeadNode->nodeIndexFlag = 3;
@@ -308,8 +313,16 @@ class Chain {
       tempHeadNode->nextNode[1] = newNodeTwo;
       tempHeadNode->nextNode[2] = newNodeThree;
       tempHeadNode->nextNode[3] = newNodeFour;
+      tempHeadNode->parentNode = (*head)->parentNode;
+      deleteLeafNodes(&tempHeadNode);
 
+      newNodeOne->parentNode = tempHeadNode;
+      newNodeTwo->parentNode = tempHeadNode;
+      newNodeThree->parentNode = tempHeadNode;
+      newNodeFour->parentNode = tempHeadNode;
+      
       *head = tempHeadNode;
+
 
   }
 };
@@ -339,7 +352,7 @@ int main() {
     c.insertEnd(yetanother);
 
     
-    string thisNew = " Tryhing to split";
+    string thisNew = " This line needs to be cahnged hakuna matata";
     c.insertEnd(thisNew);
     string extrastring = "Please work";
     c.insertEnd(extrastring);
