@@ -11,11 +11,19 @@ Chaining implementation utilizes a b-tree structure as well as a memorypool for 
 
 ## Code Directory
 
-Source code for the "correct" chain implementation is located in m-way-trees/src/
-main cpp file --> test.cpp
 
-Left b-tree code and other work just to show former progress.
+### Source Code
+Located in m-way-trees/src
+The file built is named chain_main.cpp
+[m-way-trees/src]( https://github.com/Quentin-Jimenez/CPE593-Chaining/tree/main/m-wayTrees/src )
 
+Also located in this directory is other files used for development and a testfile to be read in and inserted into the chain structure.
+
+### Old work
+This includes all the work done for our previous implementation of Chain. This work was incorrect and down the wrong path, but left it to show former efforts.
+[btrees_oldwork]( https://github.com/Quentin-Jimenez/CPE593-Chaining/tree/main/b-trees_oldwork )
+
+## Main Chain Structure
 ![Alt text](structure1.png?raw=true "Chain Example")
 
 ## Link to Overleaf Document
