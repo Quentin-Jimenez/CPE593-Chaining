@@ -25,4 +25,4 @@ chain.o: $(SRC)/chain.cc
 
  
 clean:
-	rm -rf chain_main.o chain.o chain_main.exe make.out
+	rm -rf chain_main.o chain.o chain_main.exe make.out chain_main.exe.stackdump
