@@ -188,6 +188,13 @@ class Chain {
             }
         }
 
+        // Working on this again. 
+        void insertBeginning(string line)
+        {
+
+        }
+
+
         // Inserts a value in the m-Way tree
         void insertEnd(string line)
         {
@@ -389,6 +396,7 @@ int main() {
     string other = "Welcome aboard:";
     string another = "Lets go to LaLaLand.";
     string yetanother = "Lets go to LaLaLand, again";
+    string insrStart = "Add to beginning";
 
     /*
        cout << "Read from file? Type Y/y if not N/n" << endl;
@@ -409,6 +417,7 @@ int main() {
     c.insertEnd(yetanother);
     c.insertEnd(str);
     c.insertEnd(other);
+    //c.insertBeginning(insrStart);
     c.insertEnd(another);
     c.insertEnd(yetanother);
     //c.insertEnd(str);
