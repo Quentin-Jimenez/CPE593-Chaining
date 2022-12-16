@@ -51,7 +51,20 @@ class Chain {
 
         void printTree() {
 
-            cout << "In print" << endl;
+           /*
+            int totallines = 0;
+            for(int i=0; i < M; i++){
+                totallines += root->count[i];
+            }
+
+            for(int i = 0; i < totallines; i++){
+                if(i%M == 0)
+                    cout << endl << i/M << " : ";
+                cout << root->nextLeaf[i/M]->lines[i%M] << " ";
+            }
+            cout << endl << endl;
+            */
+
 
             for(int q = 0; q < M; q++)
             {
@@ -61,7 +74,6 @@ class Chain {
                     cout << root->nextLeaf[q]->lines[i] << endl;
                 }
             }
-
 
             for(int k = 0; k < M; k++)
             {
@@ -79,7 +91,6 @@ class Chain {
                 }
                 cout << endl;
             }
-            cout << root->nextNode[3]->isLeafNode << " " << root->nextNode[3]->count[1] << endl;
 
             cout << root->nextNode[3]->nextNode[0]->nextLeaf[0]->lines[0];
 
@@ -164,6 +175,30 @@ class Chain {
                 newCount = 0;
             }
             return node;
+        }
+
+
+        void remove(int pos){
+
+            int totallines = 0;
+            for(int i=0; i < M; i++){
+                totallines += root->count[i];
+            }
+
+            root->nextLeaf[pos/M]->lines[pos%M] = ""; // Erase requested line
+            pos++;
+
+            // Update position of other lines
+            string hold = "";
+            for(int i = pos; i < totallines; i++){
+                root->nextLeaf[(i-1)/M]->lines[(i-1)%M] = root->nextLeaf[i/M]->lines[i%M];
+            }
+
+            // Clear final line and update count
+            root->nextLeaf[(totallines-1)/M]->lines[(totallines-1)%M] = "";
+            root->count[(totallines-1)/M]--;
+            root->nextLeaf[(totallines-1)/M]->count--;
+
         }
 
         // Adjusts the value of the node
