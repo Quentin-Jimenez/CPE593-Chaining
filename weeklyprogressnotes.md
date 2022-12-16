@@ -35,5 +35,8 @@
 - Wrote main functions for reading lines from text files
 
 ## 12/01/22 Week 5
-- todo- create atleast 2-3 drawings of btree and 2 for mempools
-      - use the interactive Btree website to create a gif for Nodesplit
+- Created and presented powerpoint
+- Working on and completing the Final Paper
+- Debugging insert end and insert middle functions --> just trying to get these fixed and working by submission
+-create atleast 2-3 drawings of btree and 2 for mempools
+- TODO: use the interactive Btree website to create a gif for Nodesplit
