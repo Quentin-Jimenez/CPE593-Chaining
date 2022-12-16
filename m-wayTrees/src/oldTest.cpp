@@ -207,7 +207,6 @@ int main() {
     c.insertEnd(other);
     c.insertEnd(another);
     c.insertEnd(yetanother);
-
     */
     c.insertEnd("a00");
     c.insertEnd("b01");
