@@ -34,6 +34,8 @@ For example, if there was a root node with four internal nodes, the root node co
 
 ## Code Directory
 
+### Final Paper
+Located in the doc/ directory as instructed.
 
 ### Source Code
 Located in m-way-trees/Chain_Code
@@ -41,6 +43,7 @@ The file main file is located in the src directory and is named chain_main.cc. I
 [m-way-trees/Chain_Code]( https://github.com/Quentin-Jimenez/CPE593-Chaining/tree/main/m-wayTrees/Chain_Code )
 
 Also located in this directory is other files used for development and a testfile to be read in and inserted into the chain structure.
+Includes README file on how to run the code and the main functions utilized.
 
 ### Chain Operations Diagrams
 Located in m-way-tree/drawings
