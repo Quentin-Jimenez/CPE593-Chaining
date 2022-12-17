@@ -27,6 +27,7 @@ void Chain::readFile(ifstream &fileName)
 void Chain::printTree() {
 
     /*
+    
        int totallines = 0;
        for(int i=0; i < M; i++){
        totallines += root->count[i];
@@ -38,18 +39,10 @@ void Chain::printTree() {
        }
        cout << endl << endl;
        */
+       
 
 
-    for(int q = 0; q < M; q++)
-    {
-        cout << root->count[q] << endl;
-        for(int i = 0; i < M; i++)
-        {
-            cout << root->nextLeaf[q]->lines[i] << endl;
-        }
-    }
-
-    for(int k = 0; k < M; k++)
+    for(int k = 0; k < M - 1; k++)
     {
         cout << "Node: " << k << endl;
         cout << "Top node count " << root->count[k] << endl;
@@ -59,14 +52,32 @@ void Chain::printTree() {
             cout << "Count " << root->nextNode[k]->count[m] << endl;
             for(int i = 0; i < M; i++)
             {
-                cout << root->nextNode[k]->nextLeaf[m]->lines[i];
+                cout << root->nextNode[k]->nextLeaf[m]->lines[i] << endl;
             }
             cout << endl;
         }
         cout << endl;
     }
 
-    cout << root->nextNode[3]->nextNode[0]->nextLeaf[0]->lines[0];
+    cout << "Node: 3" << endl;
+    
+    for(int i = 0; i < M;  i++)
+    {
+        cout << "Inner Node: " << i << endl;
+        for(int j = 0; j < M; j++)
+        {
+            cout << "Leaf Node: " << j << endl;
+            cout << "Count " << root->nextNode[3]->nextNode[i]->count[j] << endl;
+        
+            for(int m = 0; m < M; m++)
+            {
+                if(root->nextNode[3]->nextNode[i]->nextLeaf[j] != nullptr)
+                    cout << root->nextNode[3]->nextNode[i]->nextLeaf[j]->lines[m] << endl;
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
 
     cout << endl;
 }
@@ -145,6 +156,7 @@ Chain::InternalNode * Chain::countBacktrace(InternalNode * node)
                 }
             }
         }
+        cout << " New count is " << newCount << endl;
 
         newCount = 0;
     }
@@ -191,9 +203,12 @@ Chain::LeafNode* Chain::fillnode(string line, LeafNode *node, bool isNewLeaf) {
     return node;
 }
 
+// Used to delete leaves from an internal node 
 void Chain::deleteLeafNodes(InternalNode **node) {
     for (int i = 0; i < M; i++) {
-        delete[] (*node)->nextLeaf[i];
+        //LeafNode *tmp = (*node)->nextLeaf[i];
+        //free(tmp);
+        delete [] (*node)->nextLeaf[i];
     }
 }
 
@@ -204,18 +219,20 @@ void Chain::insertBeginning(string line)
 }
 
 
-// Inserts a value in the m-Way tree
+// Inserts a value in the end position of the m-Way tree
 void Chain::insertEnd(string line)
 {
     root = setval(line, this->root);
-    //cout << "Testing" << this->root->nextNode[3]->nextNode[0]->nextLeaf[0]->lines[0] << endl;
 }
 
-// Sets the value in the node
+// Sets the value in the node --> this function is exclusivley for insert end
 Chain::InternalNode * Chain::setval(string line, InternalNode *node)
 {
 
     // if node is null
+    // In this case we create a new interal node root. This points to four leafNodes
+    // Parent node is set to nullptr
+    // Insert into postion 0 and thats it
     if (node == NULL) {
         InternalNode *newRoot = new InternalNode();
         LeafNode *leafNode = new LeafNode();
@@ -232,7 +249,6 @@ Chain::InternalNode * Chain::setval(string line, InternalNode *node)
     else {
 
         //Check if node points to leaf, if it doesn't recursively call and go to last possible node
-
         if(node->isLeafNode)
         {
             int isNodeFull = true;
@@ -241,6 +257,7 @@ Chain::InternalNode * Chain::setval(string line, InternalNode *node)
                 if(node->count[index] < M)
                 {
 
+                    // If nextLeaf does not exist. Allocate and insert line in newLeaf
                     if(node->nextLeaf[index] == nullptr)
                     {
                         LeafNode *newLeaf = new LeafNode();
@@ -252,7 +269,7 @@ Chain::InternalNode * Chain::setval(string line, InternalNode *node)
                     }
 
                     node->nextLeaf[index] = fillnode(line, node->nextLeaf[index], false);
-                    countBacktrace(node);
+                    countBacktrace(node); // Call to update the count
 
                     node->count[index] += 1;
 
@@ -262,20 +279,15 @@ Chain::InternalNode * Chain::setval(string line, InternalNode *node)
 
             if(isNodeFull)
             {
-                if(node->parentNode != nullptr)
-                {
-
-                    cout << node->parentNode->count[0] << endl;
-                    cout << node->parentNode->count[1] << endl;
-                    cout << node->parentNode->count[2] << endl;
-                    cout << node->parentNode->count[3] << endl;
-
-                }
+                //If node is full we need to split and create four more nodes
                 node = splitEnd(line, node);
-                cout << node->nextNode[1]->nextLeaf[0]->lines[0] << endl;
+
+               
+                //Call the coutBacktrace function on both of the newly created nodes to update the counts
+                //up until the root of the tree
+
                 countBacktrace(node->nextNode[0]);
                 countBacktrace(node->nextNode[1]);
-                cout << node->nextNode[1]->nextLeaf[0]->lines[0] << endl;
 
                 return node;
             }
@@ -288,7 +300,6 @@ Chain::InternalNode * Chain::setval(string line, InternalNode *node)
                 // cout << "Node count check " << node->count[nodeIndex] << endl;
                 if(node->count[nodeIndex] % 16 > 0 || node->count[nodeIndex] == 0)
                 {
-                    cout << "Index is " << nodeIndex<< endl; 
                     setval(line, node->nextNode[nodeIndex]);
                     return node;
                 }
@@ -349,52 +360,64 @@ void Chain::insertMiddle(string line, int pos) {
 // Splits the node
 Chain::InternalNode * Chain::splitEnd(string line, InternalNode *head)
 {
-    cout << "In split" << endl;
-    cout << line << endl;
 
-
+    //Create four new internal nodes
     InternalNode *newNodeOne = new InternalNode();
     InternalNode *newNodeTwo = new InternalNode();
     InternalNode *newNodeThree = new InternalNode();
     InternalNode *newNodeFour = new InternalNode();
 
-    InternalNode *tempHeadNode = new InternalNode();
     LeafNode *newLeaf = new LeafNode();
 
     //TODO hardcoded for M = 4. Will need to change this
-    newNodeOne = head;
+    
+    //First new node is set to the original node
+    for(int i = 0; i < M; i++)
+    {
+        newNodeOne->nextLeaf[i] = head->nextLeaf[i];
+        newNodeOne->count[i] = 4;
+        head->nextLeaf[i] = nullptr;
+    }
     newNodeOne->isLeafNode = true;
     newNodeOne->nodeIndexFlag = 0;
+    
 
+    //Since this funciton is for splitting to the end. The new value will be inserted into the second node
+    //in position 0
     fillnode(line, newLeaf, true);
     newNodeTwo->nextLeaf[0] = newLeaf;
     newNodeTwo->isLeafNode = true;
     newNodeTwo->count[0] = 1;
     newNodeTwo->nodeIndexFlag = 1;
 
+
+    //Rest of the nodes are empty so we just do basic initialization
     newNodeThree->isLeafNode = true;
     newNodeThree->nodeIndexFlag = 2;
 
     newNodeFour->isLeafNode = true;
     newNodeFour->nodeIndexFlag = 3;
 
-    tempHeadNode->nodeIndexFlag = 3;
-    tempHeadNode->isLeafNode = false;
-    tempHeadNode->count[0] = 16;
-    tempHeadNode->count[1] = 1;
-    tempHeadNode->nextNode[0] = newNodeOne;
-    tempHeadNode->nextNode[1] = newNodeTwo;
-    tempHeadNode->nextNode[2] = newNodeThree;
-    tempHeadNode->nextNode[3] = newNodeFour;
-    tempHeadNode->parentNode = head->parentNode;
-    deleteLeafNodes(&tempHeadNode);
+    // Create a new head node where this replaces the input node in the tree
+    head->nodeIndexFlag = 3;
+    head->isLeafNode = false;
+    // Update the counts, first node full, second node one with new element
+    head->count[0] = 16;
+    head->count[1] = 1;
+    head->count[2] = 0;
+    head->count[3] = 0;
+    head->nextNode[0] = newNodeOne;
+    head->nextNode[1] = newNodeTwo;
+    head->nextNode[2] = newNodeThree;
+    head->nextNode[3] = newNodeFour;
 
-    newNodeOne->parentNode = tempHeadNode;
-    newNodeTwo->parentNode = tempHeadNode;
-    newNodeThree->parentNode = tempHeadNode;
-    newNodeFour->parentNode = tempHeadNode;
+    //All four new nodes point to the new head
+    newNodeOne->parentNode = head;
+    newNodeTwo->parentNode = head;
+    newNodeThree->parentNode = head;
+    newNodeFour->parentNode = head;
 
-    head = tempHeadNode;
+
     return head;
 }
 
