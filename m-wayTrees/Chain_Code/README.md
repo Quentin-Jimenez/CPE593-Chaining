@@ -110,6 +110,11 @@ beginning from the last value in the leaf node. This process creates an empty le
 of internal21. The new values are then inserted into the newly emptied leaf node. The same process is repeated ten 
 times to insert all strings into position 25.
 
-## Remove
+## Split
 
+Another core function in our tree structure. If the leafnodes are full. Essentially we are taking the internalNode that points to the leaves and creating a new node from that that points to four new internalNodes. In the case of InsertEnd. All of the lines that were in the original node are put into internalNode1, and the new line is inserted into internalNode2. InternalNode 3 and 4 are initalized but left empty.
+InsertMiddle Split is similar to this, but instead splits it depending on the insert position.
+
+## Remove
+Traverse to the postion using the internalNode count[]. Find line number, remove, and shift everything else left.
 
