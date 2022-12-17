@@ -24,6 +24,9 @@ void Chain::readFile(ifstream &fileName)
     }
 }
 
+// Function used to print trees and thier contents
+// This is sort of hard coded sadly but it did its job for testing
+// Can test for no splits (16 lines), one split (up to 64 lines) and a third split for insertEnd
 void Chain::printTree() {
 
     /*
@@ -42,44 +45,78 @@ void Chain::printTree() {
        
 
 
-    for(int k = 0; k < M - 1; k++)
+    if(root->count[3] > 64)
     {
-        cout << "Node: " << k << endl;
-        cout << "Top node count " << root->count[k] << endl;
+
+        for(int k = 0; k < M - 1; k++)
+        {
+            cout << "Node: " << k << endl;
+            cout << "Top node count " << root->count[k] << endl;
+            for(int m = 0; m < M; m++)
+            {
+                cout << "Leaf Node: " << m << endl;
+                cout << "Count " << root->nextNode[k]->count[m] << endl;
+                for(int i = 0; i < M; i++)
+                {
+                    if(root->nextNode[k]->nextLeaf[m] != nullptr)
+                        cout << root->nextNode[k]->nextLeaf[m]->lines[i] << endl;
+                }
+                cout << endl;
+            }
+        }
+
+        cout << "Node: 3" << endl;
+
+        for(int i = 0; i < M;  i++)
+        {
+            cout << "Inner Node: " << i << endl;
+            for(int j = 0; j < M; j++)
+            {
+                cout << "Leaf Node: " << j << endl;
+                cout << "Count " << root->nextNode[3]->nextNode[i]->count[j] << endl;
+
+                for(int m = 0; m < M; m++)
+                {
+                    if(root->nextNode[3]->nextNode[i]->nextLeaf[j] != nullptr)
+                        cout << root->nextNode[3]->nextNode[i]->nextLeaf[j]->lines[m] << endl;
+                }
+            }
+        }
+    }
+    else if(root->count[3] <= 64 && root->count[3] > 16)
+    {
+        for(int k = 0; k < M; k++)
+        {
+            cout << "Node: " << k << endl;
+            cout << "Top node count " << root->count[k] << endl;
+            for(int m = 0; m < M; m++)
+            {
+                cout << "Leaf Node: " << m << endl;
+                cout << "Count " << root->nextNode[k]->count[m] << endl;
+                for(int i = 0; i < M; i++)
+                {
+                    if(root->nextNode[k]->nextLeaf[m] != nullptr)
+                        cout << root->nextNode[k]->nextLeaf[m]->lines[i] << endl;
+
+                }
+                cout << endl;
+            }
+        }
+    }
+    else    {
+
         for(int m = 0; m < M; m++)
         {
             cout << "Leaf Node: " << m << endl;
-            cout << "Count " << root->nextNode[k]->count[m] << endl;
+            cout << "Count " << root->count[m] << endl;
             for(int i = 0; i < M; i++)
             {
-                cout << root->nextNode[k]->nextLeaf[m]->lines[i] << endl;
+                if(root->nextLeaf[m] != nullptr)
+                    cout << root->nextLeaf[m]->lines[i] << endl;
             }
             cout << endl;
         }
-        cout << endl;
     }
-
-    cout << "Node: 3" << endl;
-    
-    for(int i = 0; i < M;  i++)
-    {
-        cout << "Inner Node: " << i << endl;
-        for(int j = 0; j < M; j++)
-        {
-            cout << "Leaf Node: " << j << endl;
-            cout << "Count " << root->nextNode[3]->nextNode[i]->count[j] << endl;
-        
-            for(int m = 0; m < M; m++)
-            {
-                if(root->nextNode[3]->nextNode[i]->nextLeaf[j] != nullptr)
-                    cout << root->nextNode[3]->nextNode[i]->nextLeaf[j]->lines[m] << endl;
-            }
-            cout << endl;
-        }
-        cout << endl;
-    }
-
-    cout << endl;
 }
 
 Chain::InternalNode * Chain::countBacktrace(InternalNode * node)
@@ -156,7 +193,6 @@ Chain::InternalNode * Chain::countBacktrace(InternalNode * node)
                 }
             }
         }
-        cout << " New count is " << newCount << endl;
 
         newCount = 0;
     }
