@@ -32,6 +32,8 @@ Chain is an efficient tree data structure used to represent extremely large text
 
 For example, if there was a root node with four internal nodes, the root node contains an array count[] which would be populated with something simlar to the following [16, 32, 48, 52]. If a number was needed to be inserted into the 17th position, it would check count[0] to count[M]. Since 16 < 17 it would iterate to count[1]. 17 < 32 thus it traverses down to the next node at root->nextNode[1]. From there it would check if that internalNode was pointing to leafNodes or more Internal nodes by a boolean value that is set (isLeafPointer). If it was another internalNode it would do the same process as mentioned above and search for the correct position to traverse down. If it was pointed to leaves then it would find the correct position in the leafNodes lines[] array. If there was a slot avaialble it would insert in the position and the operation would be complete. If the leafNode was full, the aforementioned split operation would take place. After both scenarios a backtract up to the root of the tree would occur, and the counts would then be updated according to the change in the number of leaves (whether a removal or insertion occured).
 
+Chain allows for an overall smaller tree structure than Rope (its competitor). Rope would have nodes for every word in a line, whereas Chain would have a node for just the lines. Also in our implementation we used an m-ways-tree which also drastically reduce the depth. This allows for fast insertions and deletions. This however is at the code of word manipulation; however this is outside of our scope.
+
 ## Code Directory
 
 ### Final Paper
